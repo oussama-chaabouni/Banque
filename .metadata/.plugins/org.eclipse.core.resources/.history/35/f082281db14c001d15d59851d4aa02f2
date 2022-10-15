@@ -1,7 +1,0 @@
-package banque.entities;
-
-import java.io.Serializable;
-
-public class Transaction implements Serializabl{
-
-}

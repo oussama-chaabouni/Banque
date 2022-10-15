@@ -1,7 +1,0 @@
-package banque.entities;
-
-public enum StatusCredit {
-	EN-COURS,
-	ACCEPTE,
-	REFUSE
-}
