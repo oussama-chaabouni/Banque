@@ -1,0 +1,12 @@
+package banque.entities;
+
+import java.io.Serializable;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+@Entity	
+@Table(name="Echeance")
+public class Echeance implements Serializable{
+
+}

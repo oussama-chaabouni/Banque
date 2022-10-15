@@ -1,0 +1,5 @@
+package banque.entities;
+
+public class Tresorie {
+
+}

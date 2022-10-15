@@ -1,0 +1,6 @@
+package banque.entities;
+
+public class Emplois {
+	private static final long serialVersionUID = 1L;
+
+}

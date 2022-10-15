@@ -1,0 +1,7 @@
+package banque.entities;
+
+import java.io.Serializable;
+
+public class Employe implements Serializable{
+
+}
