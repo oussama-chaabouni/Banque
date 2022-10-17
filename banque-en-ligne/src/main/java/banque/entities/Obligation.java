@@ -45,5 +45,97 @@ public class Obligation implements Serializable{
 	
 	@ManyToOne
 	private CompteTitre TitreObligations;
+
+	public long getIdObligation() {
+		return idObligation;
+	}
+
+	public void setIdObligation(long idObligation) {
+		this.idObligation = idObligation;
+	}
+
+	public float getMontant() {
+		return Montant;
+	}
+
+	public void setMontant(float montant) {
+		Montant = montant;
+	}
+
+	public Date getEchanceOblig() {
+		return EchanceOblig;
+	}
+
+	public void setEchanceOblig(Date echanceOblig) {
+		EchanceOblig = echanceOblig;
+	}
+
+	public float getCoupon() {
+		return Coupon;
+	}
+
+	public void setCoupon(float coupon) {
+		Coupon = coupon;
+	}
+
+	public int getMaturite() {
+		return Maturite;
+	}
+
+	public void setMaturite(int maturite) {
+		Maturite = maturite;
+	}
+
+	public float getTauxActu() {
+		return TauxActu;
+	}
+
+	public void setTauxActu(float tauxActu) {
+		TauxActu = tauxActu;
+	}
+
+	public float getValeurNominal() {
+		return ValeurNominal;
+	}
+
+	public void setValeurNominal(float valeurNominal) {
+		ValeurNominal = valeurNominal;
+	}
+
+	public float getTauxRendement() {
+		return TauxRendement;
+	}
+
+	public void setTauxRendement(float tauxRendement) {
+		TauxRendement = tauxRendement;
+	}
+
+	public CompteTitre getTitreObligations() {
+		return TitreObligations;
+	}
+
+	public void setTitreObligations(CompteTitre titreObligations) {
+		TitreObligations = titreObligations;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public Obligation(long idObligation, float montant, Date echanceOblig, float coupon, int maturite, float tauxActu,
+			float valeurNominal, float tauxRendement, CompteTitre titreObligations) {
+		super();
+		this.idObligation = idObligation;
+		Montant = montant;
+		EchanceOblig = echanceOblig;
+		Coupon = coupon;
+		Maturite = maturite;
+		TauxActu = tauxActu;
+		ValeurNominal = valeurNominal;
+		TauxRendement = tauxRendement;
+		TitreObligations = titreObligations;
+	}
+	
+	
 	
 }
