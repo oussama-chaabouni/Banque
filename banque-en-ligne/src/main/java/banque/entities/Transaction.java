@@ -51,8 +51,6 @@ public class Transaction implements Serializable{
 	@ManyToOne
 	private CompteCourant CourantTransactions;
 	
-	@ManyToOne
-	private Tresorie TresorieTransactions;
 	
 	@ManyToMany(cascade = CascadeType.ALL)
 	private Set<Reclamation> ReclamationsTransactions;
