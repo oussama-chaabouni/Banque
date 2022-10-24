@@ -135,6 +135,10 @@ public class Obligation implements Serializable{
 		TauxRendement = tauxRendement;
 		TitreObligations = titreObligations;
 	}
+
+	public Obligation() {
+		super();
+	}
 	
 	
 	

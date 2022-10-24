@@ -41,4 +41,95 @@ public class CompteTitre implements Serializable{
 	
 	@OneToMany(mappedBy = "TitreActions")
 	private Set<Action> Actions;
+
+	public long getIdCompteTitre() {
+		return idCompteTitre;
+	}
+
+	public void setIdCompteTitre(long idCompteTitre) {
+		this.idCompteTitre = idCompteTitre;
+	}
+
+	public String getLibelle() {
+		return Libelle;
+	}
+
+	public void setLibelle(String libelle) {
+		Libelle = libelle;
+	}
+
+	public float getSolde() {
+		return Solde;
+	}
+
+	public void setSolde(float solde) {
+		Solde = solde;
+	}
+
+	public float getFraisTenue() {
+		return FraisTenue;
+	}
+
+	public void setFraisTenue(float fraisTenue) {
+		FraisTenue = fraisTenue;
+	}
+
+	public Client getClientTitres() {
+		return ClientTitres;
+	}
+
+	public void setClientTitres(Client clientTitres) {
+		ClientTitres = clientTitres;
+	}
+
+	public Set<Obligation> getObligations() {
+		return Obligations;
+	}
+
+	public void setObligations(Set<Obligation> obligations) {
+		Obligations = obligations;
+	}
+
+	public Set<Ordre> getOrdres() {
+		return Ordres;
+	}
+
+	public void setOrdres(Set<Ordre> ordres) {
+		Ordres = ordres;
+	}
+
+	public Set<Action> getActions() {
+		return Actions;
+	}
+
+	public void setActions(Set<Action> actions) {
+		Actions = actions;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public CompteTitre(long idCompteTitre, String libelle, float solde, float fraisTenue, Client clientTitres,
+			Set<Obligation> obligations, Set<Ordre> ordres, Set<Action> actions) {
+		super();
+		this.idCompteTitre = idCompteTitre;
+		Libelle = libelle;
+		Solde = solde;
+		FraisTenue = fraisTenue;
+		ClientTitres = clientTitres;
+		Obligations = obligations;
+		Ordres = ordres;
+		Actions = actions;
+	}
+	
+	
+	public CompteTitre() {
+		super();
+	}
+	
+	
+	
+	
+	
 }
