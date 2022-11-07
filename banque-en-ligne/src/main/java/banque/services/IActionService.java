@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import banque.entities.Action;
+import banque.entities.CompteTitre;
 import yahoofinance.Stock;
 import yahoofinance.histquotes.Interval;
 
@@ -17,10 +18,14 @@ public interface IActionService {
 	public String convertDate(Calendar cal) ;
 	public Interval getInterval(String searchType);
 	public Action addAction(Action a,Long idt) throws IOException;
+	void sellAction(long id);
+	public void deleteAction(long id);
 	Action retrieveAction(long id);
 	List<Action> retrieveAllActions();
 	public HashMap<Object, Object>  portfolioPercentChange(int year) throws IOException;
 	public HashMap<Object, Object> portfolioEsperance(int year) throws IOException;
 	HashMap<Object, Object> portfolioEcartType(int year) throws IOException;
-	HashMap<Object, Object> portfolioVarTheorique(int year,double[] poids,int time) throws IOException;
+	HashMap<Object, Object> portfolioVarTheorique(int year,int time) throws IOException;
+	HashMap<Object, Object> portfolioVarHistorique(int year, double[] poids, int time) throws IOException;
+	List<CompteTitre> retrieveCompteTitre(long id);
 }

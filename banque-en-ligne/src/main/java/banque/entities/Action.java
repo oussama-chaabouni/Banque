@@ -38,6 +38,12 @@ public class Action implements Serializable{
 	@Column(name = "Close")
 	private BigDecimal Close;
 	
+	@Column(name = "Capital")
+	private BigDecimal Capital;
+	
+	@Column(name = "ValeurActuelle")
+	private BigDecimal ValeurActuelle;
+	
 	@ManyToOne
 	private CompteTitre TitreActions;
 
@@ -88,7 +94,15 @@ public class Action implements Serializable{
 	public void setClose(BigDecimal close) {
 		Close = close;
 	}
-	@JsonIgnore
+	
+	public BigDecimal getCapital() {
+		return Capital;
+	}
+
+	public void setCapital(BigDecimal capital) {
+		Capital = capital;
+	}
+
 	public CompteTitre getTitreActions() {
 		return TitreActions;
 	}
@@ -99,6 +113,14 @@ public class Action implements Serializable{
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+	
+	public BigDecimal getValeurActuelle() {
+		return ValeurActuelle;
+	}
+
+	public void setValeurActuelle(BigDecimal valeurActuelle) {
+		ValeurActuelle = valeurActuelle;
 	}
 
 	public Action() {

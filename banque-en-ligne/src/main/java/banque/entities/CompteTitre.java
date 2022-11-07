@@ -1,6 +1,7 @@
 package banque.entities;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -11,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity	
 @Table(name="CompteTitre")
@@ -25,7 +28,7 @@ public class CompteTitre implements Serializable{
 	private String Libelle;
 
 	@Column(name = "Solde")
-	private float Solde;
+	private BigDecimal Solde;
 	
 	@Column(name = "FraisTenue")
 	private float FraisTenue;
@@ -58,11 +61,11 @@ public class CompteTitre implements Serializable{
 		Libelle = libelle;
 	}
 
-	public float getSolde() {
+	public BigDecimal getSolde() {
 		return Solde;
 	}
 
-	public void setSolde(float solde) {
+	public void setSolde(BigDecimal solde) {
 		Solde = solde;
 	}
 
@@ -85,7 +88,7 @@ public class CompteTitre implements Serializable{
 	public Set<Obligation> getObligations() {
 		return Obligations;
 	}
-
+	@JsonIgnore
 	public void setObligations(Set<Obligation> obligations) {
 		Obligations = obligations;
 	}
@@ -97,7 +100,7 @@ public class CompteTitre implements Serializable{
 	public void setOrdres(Set<Ordre> ordres) {
 		Ordres = ordres;
 	}
-
+	@JsonIgnore
 	public Set<Action> getActions() {
 		return Actions;
 	}
@@ -110,7 +113,7 @@ public class CompteTitre implements Serializable{
 		return serialVersionUID;
 	}
 
-	public CompteTitre(long idCompteTitre, String libelle, float solde, float fraisTenue, Client clientTitres,
+	public CompteTitre(long idCompteTitre, String libelle, BigDecimal solde, float fraisTenue, Client clientTitres,
 			Set<Obligation> obligations, Set<Ordre> ordres, Set<Action> actions) {
 		super();
 		this.idCompteTitre = idCompteTitre;

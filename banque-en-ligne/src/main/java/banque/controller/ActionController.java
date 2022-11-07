@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import banque.entities.Action;
+import banque.entities.CompteTitre;
 import banque.services.IActionService;
 
 @RestController
@@ -46,6 +48,24 @@ public class ActionController {
 		return action;
 	}
 	
+	@DeleteMapping("/sell-action/{action-id}")
+	@ResponseBody
+	public void sellAction(@PathVariable("action-id") long id) {
+	ActionService.sellAction(id);
+	}
+	
+	@DeleteMapping("/delete-action/{action-id}")
+	@ResponseBody
+	public void deleteAction(@PathVariable("action-id") long id) {
+	ActionService.deleteAction(id);
+	}
+	
+	@GetMapping("/retrieve-titre/{titre-id}")
+	@ResponseBody
+	public List<CompteTitre> retrieveCompteTitre(@PathVariable("titre-id") long id) {
+	return ActionService.retrieveCompteTitre(id);
+	}
+	
 	@GetMapping("/retrieve-all-actions")
 	@ResponseBody
 	public List<Action> getLoans() {
@@ -73,8 +93,15 @@ public class ActionController {
 	
 	@PostMapping("/VarTheorique")
 	  @ResponseBody
-	  public HashMap<Object, Object> portfolioVarTheorique(@RequestParam int year,@RequestParam int time,@RequestBody double[] poids) throws IOException{
-		return  ActionService.portfolioVarTheorique(year,poids,time);
+	  public HashMap<Object, Object> portfolioVarTheorique(@RequestParam int year,@RequestParam int time) throws IOException{
+		return  ActionService.portfolioVarTheorique(year,time);
 	}
+	
+	@PostMapping("/VarHistorique")
+	  @ResponseBody
+	  public HashMap<Object, Object> portfolioVarHistorique(@RequestParam int year,@RequestParam int time,@RequestBody double[] poids) throws IOException{
+		return  ActionService.portfolioVarHistorique(year,poids,time);
+	}
+	
 
 }

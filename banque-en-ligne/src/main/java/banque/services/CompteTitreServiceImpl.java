@@ -1,8 +1,11 @@
 package banque.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import banque.entities.Action;
 import banque.entities.CompteTitre;
 import banque.repositories.CompteTitreRepository;
 
@@ -19,7 +22,17 @@ public class CompteTitreServiceImpl implements ICompteTitreService {
 		
 		return null;
 	}
+
+	@Override
+	public List<CompteTitre> retrieveAllCompteTitres() {
+		List<CompteTitre> c = (List<CompteTitre>) CompteTitreRepository.findAll();
+		return c;
+	}
 	
+	@Override
+	public CompteTitre retrieveCompteTitre(long id) {
+		return CompteTitreRepository.findById(id).orElse(null);
+	}
 	
 	
 	
