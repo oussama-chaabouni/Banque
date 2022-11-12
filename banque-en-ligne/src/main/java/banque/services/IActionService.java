@@ -25,7 +25,10 @@ public interface IActionService {
 	public HashMap<Object, Object>  portfolioPercentChange(int year) throws IOException;
 	public HashMap<Object, Object> portfolioEsperance(int year) throws IOException;
 	HashMap<Object, Object> portfolioEcartType(int year) throws IOException;
-	HashMap<Object, Object> portfolioVarTheorique(int year,int time) throws IOException;
-	HashMap<Object, Object> portfolioVarHistorique(int year, double[] poids, int time) throws IOException;
+	HashMap<Object, Object> portfolioVarTheorique(int year,int time,double confiance) throws IOException;
+	HashMap<Object, Object> portfolioVarHistorique(int year, int time,double confiance) throws IOException;
 	List<CompteTitre> retrieveCompteTitre(long id);
+	HashMap<Object, Object> movingAverage(String ticker,int periode) throws IOException;
+	Object history();
+	HashMap<Object, Object> getCloseHistory(String ticker, int year, String searchType) throws IOException;
 }

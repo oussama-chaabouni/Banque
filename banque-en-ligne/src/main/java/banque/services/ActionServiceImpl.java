@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -21,7 +22,6 @@ import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 import yahoofinance.histquotes.HistoricalQuote;
 import yahoofinance.histquotes.Interval;
-import org.apache.commons.math3.stat.descriptive.rank.Percentile;
 @Service
 public class ActionServiceImpl implements IActionService {
 	@Autowired
@@ -72,7 +72,24 @@ public class ActionServiceImpl implements IActionService {
 		return history;
 	}
 	
+	@Override
+	public HashMap<Object, Object> getCloseHistory(String ticker, int year, String searchType) throws IOException {
+		Calendar from = Calendar.getInstance();
+		Calendar to = Calendar.getInstance();
+		from.add(Calendar.YEAR, Integer.valueOf("-" + year));
 	
+		Stock stock = YahooFinance.get(ticker);
+		List<HistoricalQuote> history = stock.getHistory(from, to, getInterval(searchType));
+		
+		HashMap<Object, Object> map = new LinkedHashMap<>();
+		
+		 for(int i=0;i<history.size();i++){			
+			String date = convertDate(history.get(i).getDate()) ;
+			map.put(date, history.get(i).getClose());
+		 }
+		return map;
+		
+	}
 
 	@Override
 	public String convertDate(Calendar cal) {
@@ -188,16 +205,15 @@ public class ActionServiceImpl implements IActionService {
 			Stock stock = YahooFinance.get(a.getSymbole());
 			List<HistoricalQuote> history = stock.getHistory(from, to,Interval.DAILY);
 			 for(int i=0;i<history.size()-1;i++){
-				stock.getQuote().getChangeInPercent();
 				
 				String date = convertDate(history.get(i+1).getDate()) ;
 				
-				map.put(date, (    (history.get(i+1).getClose().doubleValue() )    /// Percentage change = New Price / Old Price - 1
-						/ (history.get(i).getClose().doubleValue() )  -   1));
+				map.put(date, Math.log(    (history.get(i+1).getClose().doubleValue() )    /// Percentage change = Ln(New Price / Old Price )
+						/ (history.get(i).getClose().doubleValue() )));
 				mapId.put(a.getSymbole(),map);
 				
 			}
-			 map = new HashMap<>();
+			 map = new LinkedHashMap<>();
 		}
 		
 	        return mapId;
@@ -217,7 +233,7 @@ public class ActionServiceImpl implements IActionService {
 			   }
 				map.put(key, sum/ ((HashMap<Object, Object>) t.getValue()).entrySet().size());
 		}
-		return map;
+		return map; 
 	}
 	
 	@Override
@@ -228,76 +244,138 @@ public class ActionServiceImpl implements IActionService {
 		
 
 		HashMap<Object, Object> map = new LinkedHashMap<>();
+		List<Action> Actions = (List<Action>) ActionRepository.findAll();
 		
-		for(Entry<Object, Object> s:mapEsperence.entrySet()) {
-			String key2 = (String) s.getKey();
+		for (Action a : Actions) {
 			for(Entry<Object, Object> t:mapChange.entrySet()) {
 				double sum = 0;
-				   String key = (String) t.getKey();
-				   
-				   for (Entry<Object, Object> e : ((HashMap<Object, Object>) t.getValue()).entrySet()) {
-					   sum = Math.pow((double) e.getValue() + (double)s.getValue(),2) + sum ; 
 					   
-				   }
-				 
-				   map.put(key, Math.sqrt (sum / ( ((HashMap<Object, Object>) t.getValue()).entrySet().size() -1 )));
+				for (Entry<Object, Object> e : ((HashMap<Object, Object>) mapChange.get(a.getSymbole())).entrySet()) {
+					sum = Math.pow((double) e.getValue() - (double)mapEsperence.get(a.getSymbole()),2) + sum ; 
+				}
+				
+				map.put(a.getSymbole(), Math.sqrt (sum / ( ((HashMap<Object, Object>) t.getValue()).entrySet().size() -1 )));
 			}
-			
-			
 			
 		}
 		return map;
 	}
 	
 	@Override
-    public HashMap<Object, Object> portfolioVarTheorique(int year,int time) throws IOException {
+    public HashMap<Object, Object> portfolioVarTheorique(int year,int time,double confiance) throws IOException {
 		HashMap<Object, Object> mapEcartType = portfolioEcartType(year);
 		HashMap<Object, Object> mapEsperence = portfolioEsperance(year);
 		
 		List<Action> Actions = (List<Action>) ActionRepository.findAll();
 		HashMap<Object, Object> map = new LinkedHashMap<>();
-		double riskProbabilityLevel = 0.05;
-		for(Entry<Object, Object> s:mapEsperence.entrySet()) {
-			String key2 = (String) s.getKey();
+		double riskProbabilityLevel = (100 - confiance)/100;
 			for(Action a : Actions){
-				for(Entry<Object, Object> t:mapEcartType.entrySet()) {
 				
-				   String key = (String) t.getKey();
-				   NormalDistribution distribution = new NormalDistribution((double)s.getValue(),(double) t.getValue()); //LOI.NORMALE.INVERSE(5%;esp;ecart)
-				   double outcomeRisk = distribution.inverseCumulativeProbability(riskProbabilityLevel);  
-				   map.put(key, outcomeRisk * a.getCapital().doubleValue() * Math.sqrt(time) );
-				}
-			
+				NormalDistribution distribution = new NormalDistribution((double)mapEsperence.get(a.getSymbole()),(double) mapEcartType.get(a.getSymbole())); //LOI.NORMALE.INVERSE(5%;esp;ecart)
+				double outcomeRisk = distribution.inverseCumulativeProbability(riskProbabilityLevel);  
+				map.put(a.getSymbole(), outcomeRisk * a.getCapital().doubleValue() * Math.sqrt(time) );
 			}
-			
-		}
 		return map;
 
 	}	
 	
 	@Override
-    public HashMap<Object, Object> portfolioVarHistorique(int year,double[] poids,int time) throws IOException {
+    public HashMap<Object, Object> portfolioVarHistorique(int year,int time,double confiance) throws IOException {
 		//HashMap<Object, Object> mapEcartType = portfolioEcartType(year);
+		//distribution = StatUtils.percentile(d,5);			
 		HashMap<Object, Object> mapChange = portfolioPercentChange(year);
 		
-		System.out.println(poids.length);
+		List<Action> Actions = (List<Action>) ActionRepository.findAll();
 		HashMap<Object, Object> map = new LinkedHashMap<>();
-		double riskProbabilityLevel = 0.05;
-		for(Entry<Object, Object> s:mapChange.entrySet()) {
-			String key = (String) s.getKey();
-			for(int i=0;i<poids.length;i++){
-				   for (Entry<Object, Object> e : ((HashMap<Object, Object>) s.getValue()).entrySet()) {
-				   double distribution = new Percentile((double)s.getValue()).evaluate(riskProbabilityLevel); //LOI.NORMALE.INVERSE(5%;esp;ecart)
-				  // double outcomeRisk = distribution.inverseCumulativeProbability(riskProbabilityLevel);  
-				   map.put(key, distribution * poids[i] * Math.sqrt(time) );
+
+			for(Action a : Actions){
 				
-			
-				   }
+				
+				for(Entry<Object, Object> t:mapChange.entrySet()) {
+					double [] d  = new double[((HashMap<Object, Object>) t.getValue()).entrySet().size() ];
+					int i = 0;
+					
+					for (Entry<Object, Object> e : ((HashMap<Object, Object>) mapChange.get(a.getSymbole())).entrySet()) {
+						d[i] = (double) e.getValue();
+						i+=1;
+					}
+					   double distribution = new PercentileExcel().evaluate(d,100-confiance);
+					   map.put(a.getSymbole(), distribution * a.getCapital().doubleValue() * Math.sqrt(time) );
 			}
+
 		}
 		return map;
-
+	}
+	
+	
+	ArrayList<BigDecimal> history = new ArrayList<BigDecimal>();
+	//@Scheduled(cron = "*/20 * * * * *")
+	public void stream() throws IOException {
+		String ticker = "BTC-USD";
+		Stock stock = YahooFinance.get(ticker);
+		
+		history.add(stock.getQuote(true).getPrice());
+		System.out.println(history);
 	}
 		
+	
+	@Override
+	public Object history() {
+		return history;
+	}
+	
+	/*
+	 @Override
+	public HashMap<Object, Object> movingAverage(String ticker,int periode) throws IOException {
+		Calendar from = Calendar.getInstance();
+		Calendar to = Calendar.getInstance();
+		from.add(Calendar.YEAR, Integer.valueOf("-" + 1));
+		Stock stock = YahooFinance.get(ticker);
+		// List<HistoricalQuote> history = stock.getHistory(from, to, Interval.DAILY);
+		HashMap<Object, Object> map = new LinkedHashMap<>();
+		ArrayList<BigDecimal> history = new ArrayList<BigDecimal>();
+		for(int i=0; i <= periode;i++){		
+			history.add(stock.getQuote(true).getPrice());
+		}		
+			 for(int i=0; i+periode <= history.size();i++){
+				BigDecimal sum = BigDecimal.ZERO ;
+				for (int j=i; j<i+ periode; j++) {	
+					if (history.size()==periode) {
+						history.remove(0)z
+					}
+					sum = history.get(j).add(sum);				
+			}
+				map.put("Moving Average " + periode +" "+ i,  sum.divide(BigDecimal.valueOf( periode), 2, RoundingMode.HALF_UP));
+		}
+		
+	        return map;
+	}
+	 */
+	
+	@Override
+	public HashMap<Object, Object> movingAverage(String ticker,int periode) throws IOException {
+		//Calendar from = Calendar.getInstance();
+		//Calendar to = Calendar.getInstance();
+		//from.add(Calendar.YEAR, Integer.valueOf("-" + 1));
+		//Stock stock = YahooFinance.get(ticker);
+		// List<HistoricalQuote> history = stock.getHistory(from, to, Interval.DAILY);
+		HashMap<Object, Object> map = new LinkedHashMap<>();
+		//ArrayList<BigDecimal> history = new ArrayList<BigDecimal>();
+		//for(int i=0; i <= periode;i++){		
+		//	history.add(stock.getQuote(true).getPrice());
+		//}		
+			 for(int i=0; i+periode < history.size()+1;i++){
+				BigDecimal sum = BigDecimal.ZERO ;
+				for (int j=i; j<i+ periode; j++) {	
+					if (history.size()==periode) {
+						history.remove(0);
+					}
+					sum = history.get(j).add(sum);				
+			}
+				map.put("Moving Average " + periode +" "+ i,  sum.divide(BigDecimal.valueOf( periode), 3, RoundingMode.HALF_UP));
+		}
+		
+	        return map;
+	}
 	
 }

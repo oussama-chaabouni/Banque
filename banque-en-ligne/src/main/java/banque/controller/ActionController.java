@@ -40,6 +40,12 @@ public class ActionController {
 		return  ActionService.getHistory(ticker, year, searchType);
 	  }
 	
+	@PostMapping("/closeHistory")
+	  @ResponseBody
+	  public Object closehistoryStock(@RequestParam String ticker, @RequestParam int year,@RequestParam String searchType  ) throws IOException {
+		return  ActionService.getCloseHistory(ticker, year, searchType);
+	  }
+	
 	@RequestMapping(value="/add-action/{titre-id}", produces = "application/json", method = RequestMethod.POST)
 	@ResponseBody
 	public Action addSlice(@RequestBody Action a,@PathVariable("titre-id") Long IdC) throws IOException
@@ -91,17 +97,28 @@ public class ActionController {
 		return  ActionService.portfolioEcartType(year);
 	}
 	
-	@PostMapping("/VarTheorique")
+	@GetMapping("/VarTheorique")
 	  @ResponseBody
-	  public HashMap<Object, Object> portfolioVarTheorique(@RequestParam int year,@RequestParam int time) throws IOException{
-		return  ActionService.portfolioVarTheorique(year,time);
+	  public HashMap<Object, Object> portfolioVarTheorique(@RequestParam int year,@RequestParam int time,@RequestParam double confiance) throws IOException{
+		return  ActionService.portfolioVarTheorique(year,time,confiance);
 	}
 	
-	@PostMapping("/VarHistorique")
+	@GetMapping("/VarHistorique")
 	  @ResponseBody
-	  public HashMap<Object, Object> portfolioVarHistorique(@RequestParam int year,@RequestParam int time,@RequestBody double[] poids) throws IOException{
-		return  ActionService.portfolioVarHistorique(year,poids,time);
+	  public HashMap<Object, Object> portfolioVarHistorique(@RequestParam int year,@RequestParam int time,@RequestParam double confiance) throws IOException{
+		return  ActionService.portfolioVarHistorique(year,time,confiance);
 	}
 	
+	@PostMapping("/movingAverage")
+	  @ResponseBody
+	  public HashMap<Object, Object>  movingAverage(@RequestParam String ticker,@RequestParam int periode )throws IOException{
+		return  ActionService.movingAverage(ticker,periode);
+	}
+	
+	@PostMapping("/history1")
+	  @ResponseBody
+	  public Object history(){
+		return  ActionService.history();
+	}
 
 }
