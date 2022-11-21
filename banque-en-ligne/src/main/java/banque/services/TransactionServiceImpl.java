@@ -53,20 +53,16 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public int updateTypeTransactBycompteCourantId(TypeTransaction typeTransaction, long compteCourantId) {
-		return TransactionRep.updateTypeTransactionBycompteCourantId(typeTransaction,compteCourantId);
+	public int updateTypeTransactBycompteCourantRib(TypeTransaction typeTransaction, long rib) {
+		return TransactionRep.updateTypeTransactionBycompteCourantRib(typeTransaction,rib);
 	}
 
 	@Override
-	public int deleteTransactByTypeTransactionAndSource(TypeTransaction typeTransaction, String source) {
-		return TransactionRep.deleteTransactionByTypeTransactionAndSource(typeTransaction, source);
+	public int deleteTransactByTypeTransactionAndRibc(TypeTransaction typeTransaction, long rib) {
+		return TransactionRep.deleteTransactionByTypeTransactionAndRibc(typeTransaction, rib);
 	}
 
-	@Override
-	public void insertTransact(long compteCourantId,TypeTransaction typeTransaction, float montant, String source, String statut,String raison, LocalDateTime creeLe) {
-		TransactionRep.insertTransaction(compteCourantId,typeTransaction, montant, source, statut, raison, creeLe);
-		
-	}
+
 
 	
 		

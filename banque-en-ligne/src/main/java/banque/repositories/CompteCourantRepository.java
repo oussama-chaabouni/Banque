@@ -1,5 +1,7 @@
 package banque.repositories;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -14,12 +16,13 @@ import banque.entities.CompteCourant;
 public interface CompteCourantRepository extends CrudRepository<CompteCourant, Long> {
 	
 	
-	@Query("SELECT Solde FROM CompteCourant cc WHERE cc.idCompteCourant= :idCompteCourant")
-	float getSoldeCompteCourant(@Param("idCompteCourant") long idCompteCourant);
+	@Query("SELECT Solde FROM CompteCourant cc WHERE cc.rib= :rib")
+	float getSoldeCompteCourant(@Param("rib") long rib);
 	
 	@Modifying
-	@Query("update CompteCourant cc set cc.Solde = :new_solde where cc.idCompteCourant = :idCompteCourant" )
-	void ChangeSoldeCompteCourantById(@Param("new_solde")float new_solde,@Param("idCompteCourant") long idCompteCourant );
+	@Query("update CompteCourant cc set cc.Solde = :new_solde where cc.rib = :rib" )
+	void ChangeSoldeCompteCourantByRib(@Param("new_solde")float new_solde,@Param("rib") long ribc );
+	
 	
 
 }

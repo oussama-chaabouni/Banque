@@ -16,14 +16,14 @@ import banque.entities.Payement;
 public interface PayementRepository extends CrudRepository<Payement, Long>{
 
 	@Modifying
-	@Query(value = "INSERT INTO payement(compte_courant_id,beneficiaire, beneficiaire_courant_acc,montant,reference,statut, code_raison,date_operation)" +
-			"VALUES(:compte_courant_id,:beneficiaire, :beneficiaire_courant_acc, :montant, :reference, :statut, :code_raison, :date_operation)", nativeQuery= true )
+	@Query(value = "INSERT INTO payement(rib,beneficiaire, beneficiaire_rib,montant,motif,statut, code_raison,date_operation)" +
+			"VALUES(:rib,:beneficiaire, :beneficiaire_rib, :montant, :motif, :statut, :code_raison, :date_operation)", nativeQuery= true )
 	void ajouterPayement(
-			@Param("compte_courant_id") long compte_courant_id,
+			@Param("rib") long rib,
 			@Param("beneficiaire") String beneficiaire,
-			@Param("beneficiaire_courant_acc") String beneficiaire_courant_acc,
+			@Param("beneficiaire_rib") String beneficiaire_rib,
 			@Param("montant") float montant,
-			@Param("reference") String reference,
+			@Param("motif") String motif,
 			@Param("statut") String statut,
 			@Param("code_raison") String code_raison,
 			@Param("date_operation") LocalDateTime date_operation);

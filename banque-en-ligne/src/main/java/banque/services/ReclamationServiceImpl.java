@@ -1,11 +1,14 @@
 package banque.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import banque.entities.Reclamation;
+import banque.entities.TypeTransaction;
 import banque.repositories.ReclamationRepository;
 
 @Service
@@ -41,6 +44,12 @@ public class ReclamationServiceImpl implements ReclamationService{
 	@Override
 	public Reclamation updateReclamation(Reclamation r) {
 		return ReclamationRep.save(r);
+	}
+
+	@Override
+	public void ajouterRec(long rib, String typeTransaction, float montant,String motif,
+			String statut, String raison, LocalDateTime creeLe, float solde, long idTransaction) {
+		ReclamationRep.ajouterReclamation(rib,typeTransaction ,montant,motif, statut, raison, creeLe, solde, idTransaction);
 	}
 
 }

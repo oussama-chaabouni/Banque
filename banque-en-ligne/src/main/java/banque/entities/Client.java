@@ -1,8 +1,11 @@
 package banque.entities;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -10,6 +13,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -66,8 +70,12 @@ public class Client implements Serializable {
 	@OneToMany(mappedBy = "ClientTitres")
 	private Set<CompteTitre> CompteTitres;
 	
+	/*
 	@OneToMany(mappedBy = "ClientCourants")
-	private Set<CompteCourant> CompteCourants;
+	private Set<CompteCourant> CompteCourants; */
+	
+	@OneToMany(mappedBy = "client")
+    private Set<CompteCourant> comptecourants = new HashSet<>();
 	
 	@OneToMany(mappedBy = "ClientEpargnes")
 	private Set<CompteEpargne> ClientEpargnes;

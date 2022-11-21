@@ -20,8 +20,7 @@ public interface TransactionService {
 	
 	//JPQL
 	List<Transaction> retrieveTransactsByTypeTransaction(TypeTransaction typeTransaction);
-	int updateTypeTransactBycompteCourantId(TypeTransaction typeTransaction ,long compteCourantId);
-	int deleteTransactByTypeTransactionAndSource(TypeTransaction typeTransaction,String source);
-	void insertTransact(long compteCourantId,TypeTransaction typeTransaction ,float montant, String source,String statut, String raison,LocalDateTime creeLe);
+	int updateTypeTransactBycompteCourantRib(TypeTransaction typeTransaction ,long rib);
+	int deleteTransactByTypeTransactionAndRibc(TypeTransaction typeTransaction,long rib);
 	
 }
