@@ -62,7 +62,7 @@ public class ScheduledJobVirementPermanent extends QuartzJobBean{
 		//update comptecourant
 		compteCourantRep.ChangeSoldeCompteCourantByRib(newSoldetransferFrom, transferFrom);
 		compteCourantRep.ChangeSoldeCompteCourantByRib(newSoldetransferTo, transferTo);
-		transactionRep.ajouterTransaction(transferFrom, "Virement_Permanent", montant, motif, "virement Permanent effectué avec succès", montant +" Dinars Transféré", currentDateTime,newSoldetransferFrom);
+		transactionRep.ajouterTransaction(transferFrom, "Virement_Permanent", montant, motif, "virement Permanent effectué avec succès", montant +" Dinars Transféré", currentDateTime);
 		
 		System.out.println(currentDateTime);
 			

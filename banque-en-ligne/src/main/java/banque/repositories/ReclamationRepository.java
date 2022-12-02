@@ -16,8 +16,8 @@ import banque.entities.Reclamation;
 public interface ReclamationRepository extends CrudRepository<Reclamation, Long>{
 	
 	@Modifying
-	@Query(value = "INSERT INTO reclamation(rib,type_transaction,montant,motif,statut, code_raison,date_operation,solde,id_transaction)" +
-			"VALUES(:rib,:type_transaction,:montant,:motif,:statut,:code_raison,:date_operation,:solde,:id_transaction)", nativeQuery= true )
+	@Query(value = "INSERT INTO reclamation(rib,type_transaction,montant,motif,statut, code_raison,date_operation)" +
+			"VALUES(:rib,:type_transaction,:montant,:motif,:statut,:code_raison,:date_operation)", nativeQuery= true )
 	void ajouterReclamation(
 			@Param("rib") long rib,
 			@Param("type_transaction") String type_transaction,
@@ -25,8 +25,6 @@ public interface ReclamationRepository extends CrudRepository<Reclamation, Long>
 			@Param("motif") String motif,
 			@Param("statut") String statut,
 			@Param("code_raison") String code_raison,
-			@Param("date_operation") LocalDateTime date_operation,
-			@Param("solde") float solde,
-			@Param("id_transaction") long id_transaction); 
+			@Param("date_operation") LocalDateTime date_operation); 
 
 }

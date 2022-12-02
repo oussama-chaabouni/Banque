@@ -32,8 +32,8 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 	
 	
 	@Modifying
-	@Query(value = "INSERT INTO transaction(rib,type_transaction,montant,motif,statut, code_raison,date_operation,solde)" +
-			"VALUES(:rib,:type_transaction,:montant,:motif,:statut, :code_raison,:date_operation,:solde)", nativeQuery= true )
+	@Query(value = "INSERT INTO transaction(rib,type_transaction,montant,motif,statut, code_raison,date_operation)" +
+			"VALUES(:rib,:type_transaction,:montant,:motif,:statut, :code_raison,:date_operation)", nativeQuery= true )
 	void ajouterTransaction(
 			@Param("rib") long rib,
 			@Param("type_transaction") String type_transaction,
@@ -42,8 +42,8 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 			
 			@Param("statut") String statut,
 			@Param("code_raison") String code_raison,
-			@Param("date_operation") LocalDateTime date_operation,
-			@Param("solde")float solde);
+			@Param("date_operation") LocalDateTime date_operation);
+	
 
 /*	
 	//7abit nesta3malha fel onetoone bech nrecuperi el transactionid mel Transaction

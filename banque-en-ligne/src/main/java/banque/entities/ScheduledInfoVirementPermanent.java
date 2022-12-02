@@ -34,7 +34,7 @@ public class ScheduledInfoVirementPermanent {
 	private String motif;
 	private LocalDateTime startTime;
 	
-	private int duree; //9adech men mara: ex :5mois
+	private int duree; //9adech men mara: ex :5fois
 	
 	private int periode;  //chaque 9adech men jours ex: chaque 30jours(mois), 90(trimestre) ...
 	

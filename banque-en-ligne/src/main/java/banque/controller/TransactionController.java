@@ -93,12 +93,13 @@ public class TransactionController {
 	}
 	
 	
-	// http://localhost:8082/banque-en-ligne/transaction/remove-transaction/{transaction-id}
-	@DeleteMapping("/remove-transaction/{transaction-id}")
+	// http://localhost:8082/banque-en-ligne/transaction/remove-transaction/{id-transaction}
+	@DeleteMapping("/remove-transaction/{id-transaction}")
 	@ResponseBody
-	public void removeTransaction(@PathVariable("transaction-id") Long transactionId) {
-	transactionService.deleteTransaction(transactionId);
+	public void removeTransaction(@PathVariable("id-transaction") Long idTransaction) {
+	transactionService.deleteTransaction(idTransaction);
 	}
+	
 	
 	// http://localhost:8082/banque-en-ligne/transaction/modify-transaction
 	@PutMapping("/modify-transaction")
@@ -130,6 +131,25 @@ public class TransactionController {
 	public int deleteTransactByTypeTransactionAndSourceJPQL(@PathVariable("typeTransaction")TypeTransaction typeTransaction,@PathVariable("ribCompteCourant")long rib) {
 		return transactionService.deleteTransactByTypeTransactionAndRibc( typeTransaction,rib);
 	}
+		
+		
+///////////NEST7A9HOM ANGULAR		
+		
+		
+		@GetMapping("/getsoldecomptecourant/{rib}")
+		@ResponseBody
+		public float getSoldeCompteCourant(@PathVariable long rib)
+	    {
+	        return compteCourantRep.getSoldeCompteCourant(rib) ;
+	    }
+		
+		@PutMapping("/ChangeSoldeCompteCourantByRib/{new_solde}/{rib}")
+		@ResponseBody
+	    void ChangeSoldeCompteCourantByRib(@PathVariable float new_solde, @PathVariable long rib) {
+			compteCourantRep.ChangeSoldeCompteCourantByRib(new_solde, rib);
+		}
+		
+//////////	
 	
 	
 /////MICRO SERVICES
@@ -146,12 +166,12 @@ public class TransactionController {
 						
 		//check if deposit amount =0
 		if(depositMontantValue == 0) {
-			transactionRep.ajouterTransaction(rib, "Depot", depositMontantValue, "", "dépot sans succés", "montant de dépot = 0", currentDateTime, currentSolde);  
+			transactionRep.ajouterTransaction(rib, "Dépot", depositMontantValue, "Dépot", "dépot sans succés", "montant de dépot = 0", currentDateTime);  
 			
 			//transactionId bech najem n3amer colonne transactionid f table reclamation
 			long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(rib);
 			
-			reclamationService.ajouterRec(rib, "Depot", depositMontantValue,"", "dépot sans succés", "montant de dépot = 0", currentDateTime,currentSolde,transactionId);		
+			reclamationService.ajouterRec(rib, "Dépot", depositMontantValue,"Dépot", "dépot sans succés", "montant de dépot = 0", currentDateTime);		
 			
 			return "deposit amount value =0";
 			
@@ -178,8 +198,8 @@ public class TransactionController {
 			float AGIOS = ((montantdudecouvert * duréedudecouvert * tauxAnnuelEffectifGlobal)/ nombredejoursdanslannée) ;
 			float newSoldeApresDecouvert = currentSolde + depositMontantValue-AGIOS;
 			
-			compteCourantRep.ChangeSoldeCompteCourantByRib(currentSolde-AGIOS+depositMontantValue,rib);
-			transactionRep.ajouterTransaction(rib, "Dépot", depositMontantValue,"", "dépot avec succés", "durée du decouvert "+duréedudecouvert, currentDateTime, newSoldeApresDecouvert);  
+			compteCourantRep.ChangeSoldeCompteCourantByRib(newSoldeApresDecouvert,rib);
+			transactionRep.ajouterTransaction(rib, "Dépot", depositMontantValue,"Dépot", "dépot avec succés", "durée du decouvert "+duréedudecouvert, currentDateTime);  
 			
 			return "AGIOS "+AGIOS +" durée du decouvert" +duréedudecouvert +"jours" ;
 		}	
@@ -189,7 +209,7 @@ public class TransactionController {
 		float newSolde = currentSolde + depositMontantValue;
 		compteCourantRep.ChangeSoldeCompteCourantByRib(newSolde,rib);
 		//Save f table transaction
-		transactionRep.ajouterTransaction(rib, "Dépot", depositMontantValue,"", "dépot avec succés", "montant de dépot = "+ depositMontantValue, currentDateTime, newSolde);  
+		transactionRep.ajouterTransaction(rib, "Dépot", depositMontantValue,"Dépot", "dépot avec succés", "montant de dépot = "+ depositMontantValue, currentDateTime);  
 
 		return "depot avec succés";
 	
@@ -212,30 +232,30 @@ public class TransactionController {
 //check if transfering into the same compteCourant
 		if(transferFrom == transferTo) {
 
-			transactionRep.ajouterTransaction(transferFrom, "Virement_Immédiat", transferMontant, motif, "transfer sans succés", "envoi au meme compte", currentDateTime,currentSoldeofCompteCourantTransferingFrom);  
+			transactionRep.ajouterTransaction(transferFrom, "Virement_Immédiat", transferMontant, motif, "Echec du virement immédiat", "envoi au meme compte", currentDateTime);  
 
 			long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(transferFrom);
-			reclamationService.ajouterRec(transferFrom, "Virement_Immédiat", transferMontant,motif, "transfer sans succés", "envoi au meme compte", currentDateTime,currentSoldeofCompteCourantTransferingFrom,transactionId);
+			reclamationService.ajouterRec(transferFrom, "Virement_Immédiat", transferMontant,motif, "Echec du virement immédiat", "envoi au meme compte", currentDateTime);
 			
 			return "cannot transfer to the same Account"; }
 		
 //check if transfer amount =0
 		if(transferMontant == 0) {
 
-			transactionRep.ajouterTransaction(transferFrom, "Virement_Immédiat", transferMontant,motif, "transfer sans succés", "Montant de transfer egale à 0", currentDateTime,currentSoldeofCompteCourantTransferingFrom);  
+			transactionRep.ajouterTransaction(transferFrom, "Virement_Immédiat", transferMontant,motif, "Echec du virement immédiat", "Montant de transfer egale à 0", currentDateTime);  
 
 			long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(transferFrom);
-			reclamationService.ajouterRec(transferFrom, "Virement_Immédiat", transferMontant,motif,"transfer sans succés","Montant de transfer egale à 0", currentDateTime,currentSoldeofCompteCourantTransferingFrom,transactionId);
+			reclamationService.ajouterRec(transferFrom, "Virement_Immédiat", transferMontant,motif,"Echec du virement immédiat","Montant de transfer egale à 0", currentDateTime);
 
 			return "transfer amount value =0 , please enter a value greater than 0";
 		}
 		//check if transfer amount >currentsolde
 		if(transferMontant > currentSoldeofCompteCourantTransferingFrom ) {
 			
-			transactionRep.ajouterTransaction(transferFrom, "Virement_Immédiat", transferMontant,motif, "transfer sans succés", "Montant Transferé est superieur au solde", currentDateTime,currentSoldeofCompteCourantTransferingFrom);  
+			transactionRep.ajouterTransaction(transferFrom, "Virement_Immédiat", transferMontant,motif, "Echec du virement immédiat", "Montant Transferé est superieur au solde", currentDateTime);  
 			
 			long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(transferFrom);
-			reclamationService.ajouterRec(transferFrom, "Virement_Immédiat", transferMontant,motif, "transfer sans succés","Montant Transferé est superieur au solde", currentDateTime,currentSoldeofCompteCourantTransferingFrom, transactionId);
+			reclamationService.ajouterRec(transferFrom, "Virement_Immédiat", transferMontant,motif, "Echec du virement immédiat","Montant Transferé est superieur au solde", currentDateTime);
 
 			
 			return "impossible de transferer un montant superieur à celui dans votre compte";		
@@ -243,10 +263,10 @@ public class TransactionController {
 		
 		if(transferMontant>=15000) {
 			
-			transactionRep.ajouterTransaction(transferFrom, "Virement_Immédiat", transferMontant,motif, "transfer sans succés", "15 000 dinars maximum par virement", currentDateTime,currentSoldeofCompteCourantTransferingFrom);  
+			transactionRep.ajouterTransaction(transferFrom, "Virement_Immédiat", transferMontant,motif, "Echec du virement immédiat", "15 000 dinars maximum par virement", currentDateTime);  
 
 			long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(transferFrom);
-			reclamationService.ajouterRec(transferFrom, "Virement_Immédiat", transferMontant,motif,"transfer sans succés","15 000 dinars maximum par virement", currentDateTime,currentSoldeofCompteCourantTransferingFrom,transactionId);
+			reclamationService.ajouterRec(transferFrom, "Virement_Immédiat", transferMontant,motif,"Echec du virement immédiat","15 000 dinars maximum par virement", currentDateTime);
 
 			return "15 000 dinars maximum par virement";
 			
@@ -262,7 +282,7 @@ public class TransactionController {
 		compteCourantRep.ChangeSoldeCompteCourantByRib(newSoldetransferFrom, transferFrom);
 		compteCourantRep.ChangeSoldeCompteCourantByRib(newSoldetransferTo, transferTo);
 		
-		transactionRep.ajouterTransaction(transferFrom, "Transfer", transferMontant,motif, "transfer avec succés", transferMontant +" Dinars Transféré", currentDateTime,newSoldetransferFrom);  
+		transactionRep.ajouterTransaction(transferFrom, "Virement_Immédiat", transferMontant,motif, "virement immédiat effectué avec succès", transferMontant +" Dinars Transféré", currentDateTime );  
 		
 		
 		
@@ -281,10 +301,10 @@ public class TransactionController {
 		//check if retrait amount =0
 		if(retraitMontantValue == 0) {
 
-			transactionRep.ajouterTransaction(rib, "Retrait", retraitMontantValue, "", "retrait sans succés", "montant retiré = "+ retraitMontantValue, currentDateTime,currentSolde);  
+			transactionRep.ajouterTransaction(rib, "Retrait", retraitMontantValue, "", "retrait sans succés", "montant retiré = "+ retraitMontantValue, currentDateTime);  
 
 			long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(rib);
-			reclamationService.ajouterRec(rib, "Retrait", retraitMontantValue,"", "retrait sans succés", "montant retiré = "+ retraitMontantValue, currentDateTime,currentSolde,transactionId);
+			reclamationService.ajouterRec(rib, "Retrait", retraitMontantValue,"", "retrait sans succés", "montant retiré = "+ retraitMontantValue, currentDateTime);
 
 			return "montant retiré =0";
 		}
@@ -296,10 +316,10 @@ public class TransactionController {
 			if(newSolde<= -1200)
 			{
 					
-			transactionRep.ajouterTransaction(rib, "Retrait", retraitMontantValue, "", "retrait sans succés", "Solde insuffisant", currentDateTime,currentSolde);  
+			transactionRep.ajouterTransaction(rib, "Retrait", retraitMontantValue, "", "retrait sans succés", "Solde insuffisant", currentDateTime);  
 					
 			long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(rib);
-			reclamationService.ajouterRec(rib, "Retrait", retraitMontantValue,"", "retrait sans succés", "Solde insuffisant", currentDateTime,currentSolde,transactionId);
+			reclamationService.ajouterRec(rib, "Retrait", retraitMontantValue,"", "retrait sans succés", "Solde insuffisant", currentDateTime);
 
 			return "Solde insuffisant";
 					
@@ -329,7 +349,7 @@ public class TransactionController {
 			float newSoldeApresDecouvert = currentSolde - retraitMontantValue-AGIOS;
 					
 			compteCourantRep.ChangeSoldeCompteCourantByRib(currentSolde-AGIOS+retraitMontantValue, rib);
-			transactionRep.ajouterTransaction(rib, "Retrait", retraitMontantValue,"", "Retrait avec succés", "durée du decouvert "+duréedudecouvert, currentDateTime, newSoldeApresDecouvert);  
+			transactionRep.ajouterTransaction(rib, "Retrait", retraitMontantValue,"", "Retrait avec succés", "durée du decouvert "+duréedudecouvert, currentDateTime);  
 					
 			return "AGIOS "+AGIOS +" durée du decouvert: " +duréedudecouvert +" jours" ;
 		}	
@@ -339,7 +359,7 @@ public class TransactionController {
 		float newSolde = currentSolde - retraitMontantValue;
 		compteCourantRep.ChangeSoldeCompteCourantByRib(newSolde, rib);
 
-		transactionRep.ajouterTransaction(rib, "Retrait", retraitMontantValue,"", "retrait avec succés", "montant retiré = "+ retraitMontantValue, currentDateTime,newSolde);  
+		transactionRep.ajouterTransaction(rib, "Retrait", retraitMontantValue,"", "retrait avec succés", "montant retiré = "+ retraitMontantValue, currentDateTime);  
 
 		return "retrait avec succés";	
 		
@@ -368,7 +388,7 @@ public class TransactionController {
 		//transactionRep.ajouterTransaction(rib, "Paiement", montantAPayer,motif, "Echec de Paiement", "montant payé = "+ montantAPayer, currentDateTime,currentSolde);  
 		
 		long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(rib);
-		reclamationService.ajouterRec(rib,"Payement",montantAPayer,motif,"Echec de Payement", "le montant que vous essayez de payer = "+ montantAPayer, currentDateTime,currentSolde,transactionId);
+		reclamationService.ajouterRec(rib,"Payement",montantAPayer,motif,"Echec de Payement", "le montant que vous essayez de payer = "+ montantAPayer, currentDateTime);
 		
 		return "Montant à payer = 0";
 		}
@@ -376,11 +396,11 @@ public class TransactionController {
 		//check if payment amount is more than current balance
 		if(montantAPayer > currentSolde) {
 			//payementRep.ajouterPayement(rib,beneficiaire,beneficiaire_rib,montantAPayer, motif,"Echec de Payement","le montant que vous essayez de payer = "+ montantAPayer +" est superieur a votre solde", currentDateTime);
-			transactionRep.ajouterTransaction(rib, "Paiement", montantAPayer,motif, "Echec de Paiement", "le montant que vous essayez de payer = "+ montantAPayer+" est superieur a votre solde", currentDateTime,currentSolde);  
+			transactionRep.ajouterTransaction(rib, "Paiement", montantAPayer,motif, "Echec de Paiement", "le montant que vous essayez de payer = "+ montantAPayer+" est superieur a votre solde", currentDateTime);  
 
 			//ONETOONE 3AL TRANSACTIONID
 			long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(rib);
-			reclamationService.ajouterRec(rib,"Payement",montantAPayer,motif,"Echec de Paiement", "montant à payer = "+ montantAPayer +" est superieur a votre solde", currentDateTime,currentSolde,transactionId);
+			reclamationService.ajouterRec(rib,"Payement",montantAPayer,motif,"Echec de Paiement", "montant à payer = "+ montantAPayer +" est superieur a votre solde", currentDateTime);
 
 			
 		return "montant à payer ne peut pas etre superieur à votre solde";
@@ -393,7 +413,7 @@ public class TransactionController {
 		
 		//Make Payement
 		payementRep.ajouterPayement(rib,beneficiaire,beneficiaire_rib,montantAPayer, motif,"Paiement avec Succés","Paiement Effectué Avec Succés", currentDateTime);
-		transactionRep.ajouterTransaction(rib, "Paiement", montantAPayer,motif, "Paiement avec Succés", montantAPayer+ " Payés Avec Succés", currentDateTime,currentSolde);  
+		transactionRep.ajouterTransaction(rib, "Paiement", montantAPayer,motif, "Paiement avec Succés", montantAPayer+ " Payés Avec Succés", currentDateTime);  
 
 	return "Payement Effectué Avec Succés";
 	}
@@ -408,6 +428,8 @@ public class TransactionController {
 		return ResponseEntity.status(HttpStatus.OK).body(null);
 	}
 	
+	
+	
 	//VIREMENT PERMANENT
 		@PostMapping("/scheduleVirementpermanent")
 		public ResponseEntity<Void> scheduleVirementPermanent(@RequestBody JobDataVirementPermanent data)
@@ -418,8 +440,89 @@ public class TransactionController {
 		}
 	
 	
+/*
+ * @Autowired
+	Scheduler quartzScheduler;
 	
+	@Autowired
+	ScheduledInfoRepo scheduledInfoRepo;
+	
+	@PostConstruct public void postContruct() { try {quartzScheduler.start(); }
+	catch(SchedulerException exception) {
+		System.out.println("scheduler throws exception" +exception); } 
+	}
+	
+	//@RequestParam("transferFromRib") String transferFromRib,  @RequestParam("transferToRib") String transferToRib,@RequestParam("transfer_amount") String transferAmount, @RequestParam("motif") String motif
+	//VIREMENT DIFFERE
+		@PostMapping("/scheduleVirementDifferetest")
+		public ResponseEntity<Void> scheduletest(@RequestParam("transferFrom") String transferFrom,  @RequestParam("transferTo") String transferTo,@RequestParam("montant") String montant, @RequestParam("motif") String motif,@PathVariable @DateTimeFormat(pattern="yyyy-MM-dd'T'HH:mm:ss") LocalDateTime startTime,JobData data )
+		{
+			//long transferFromm= Long.parseLong(transferFrom); //bech el compte courantId li fel parametrz nraja3ha long
+			//long transferToo= Long.parseLong(transferTo);
 			
+			float montantt = Integer.parseInt(montant);
+			
+			String motiff = data.getMotif();
+			LocalDateTime startTimee = data.getStartTime();
+			//long transferFromm= String.toString(transferFrom); 
+			//String transferToo= Long.toString(transferTo);
+			
+			//int counter = data.getCounter(); //counter = 9addech tet3awed men mara //par ex tetexecuta kol 30j
+			//int gapDuration = data.getGapDuration(); //bin counters 9adech testanna bech tetexecuta
+			
+			ZonedDateTime zonedDateTime =  ZonedDateTime.of(data.getStartTime(),ZoneId.of("Europe/Paris"));
+			
+			JobDataMap dataMap = new JobDataMap();
+			//dataMap.put("test", "this is a test");
+			
+			
+			ScheduledInfo  scheduledInfo = new ScheduledInfo();
+			scheduledInfo.setTransferFrom(transferFrom);
+			scheduledInfo.setTransferTo(transferTo);
+			scheduledInfo.setMontant(montantt);
+			scheduledInfo.setMotif(motiff);
+			scheduledInfo.setStartTime(startTimee);
+			
+			 
+			
+			JobDetail detail = JobBuilder.newJob(ScheduledJob.class)
+					.usingJobData(dataMap)
+					.storeDurably(false)
+					.build();
+			
+			Trigger trigger = TriggerBuilder.newTrigger()
+					.startAt(Date.from(zonedDateTime.toInstant()))
+					.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(1).withRepeatCount(0))
+					.build();
+			
+			/*Trigger tt = TriggerBuilder.newTrigger().withIdentity(fruitName)
+					.startAt(Date.from(zonedDateTime.toInstant()))
+					.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(gapDuration).withRepeatCount(24*counter))
+					.build();
+			*/
+			
+/*			
+			try {
+				quartzScheduler.scheduleJob(detail,trigger);
+				scheduledInfoRepo.save(scheduledInfo);
+				
+			} catch (SchedulerException e) {
+				
+				e.printStackTrace();
+			}
+			return ResponseEntity.status(HttpStatus.OK).body(null);
+		}
+		
+	//VIREMENT PERMANENT
+		@PostMapping("/scheduleVirementpermanent")
+		public ResponseEntity<Void> scheduleVirementPermanent(@RequestBody JobDataVirementPermanent data)
+		{
+			
+			globalRestServiceVirementPermanent.schedule(data);
+			return ResponseEntity.status(HttpStatus.OK).body(null);
+		}	
+ */
+			 
 
 	
 	

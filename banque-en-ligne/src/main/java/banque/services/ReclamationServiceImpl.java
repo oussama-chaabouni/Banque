@@ -48,8 +48,8 @@ public class ReclamationServiceImpl implements ReclamationService{
 
 	@Override
 	public void ajouterRec(long rib, String typeTransaction, float montant,String motif,
-			String statut, String raison, LocalDateTime creeLe, float solde, long idTransaction) {
-		ReclamationRep.ajouterReclamation(rib,typeTransaction ,montant,motif, statut, raison, creeLe, solde, idTransaction);
+			String statut, String raison, LocalDateTime creeLe) {
+		ReclamationRep.ajouterReclamation(rib,typeTransaction ,montant,motif, statut, raison, creeLe);
 	}
 
 }

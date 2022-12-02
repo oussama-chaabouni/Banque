@@ -2,6 +2,7 @@ package banque.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -17,6 +18,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 @Entity	
@@ -63,8 +66,9 @@ public class Employe implements Serializable{
 	@ManyToMany(mappedBy="EmployesEmplois",cascade = CascadeType.ALL)
 	private Set<Emplois> Emploiss;
 	
-	@ManyToMany(mappedBy="EmployesFormations",cascade = CascadeType.ALL)
-	private Set<Formation> Formations;
+	@JsonIgnore
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "Employe")
+	private List<Formation_Details> Formations_Details;
 	
 	@ManyToMany(mappedBy="EmployesSalaires",cascade = CascadeType.ALL)
 	private Set<Salaire> Salaires;

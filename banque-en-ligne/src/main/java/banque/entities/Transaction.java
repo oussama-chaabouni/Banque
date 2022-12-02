@@ -2,6 +2,7 @@ package banque.entities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -69,12 +70,11 @@ public class Transaction implements Serializable{
 	@OneToMany(cascade = CascadeType.ALL, mappedBy="transaction")
 	private Set<Reclamation> reclamation;  */
 
-	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "Solde")
-    private CompteCourant soldeCompteCourant;
 
 
-
+	@OneToMany(targetEntity=Reclamation.class ,cascade = CascadeType.ALL)	
+	@JoinColumn(name="rib",referencedColumnName="rib")
+	private List<Reclamation> reclamations;
 	
 
 	

@@ -49,16 +49,10 @@ public class Reclamation implements Serializable{
 	private String statut;
 	private String codeRaison;
 	private LocalDateTime dateOperation;
-	private float solde;
 	/*
 	@JsonBackReference
 	@ManyToOne
 	Transaction transaction;*/
-	
-	@OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "idTransaction")
-    private Transaction transaction;
-	
 	
 	
 	

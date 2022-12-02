@@ -45,7 +45,7 @@ public class ScheduledJob extends QuartzJobBean{
 		long transferFrom = scheduledInfoRep.getTransferFrom(transactionIdDiffere);
 		long transferTo = scheduledInfoRep.getTransferTo(transactionIdDiffere);
 		float montant = scheduledInfoRep.getMontant(transactionIdDiffere);	
-		String motif = scheduledInfoRep.getMotif(transactionIdDiffere);	
+		String motif = scheduledInfoRep.getMotif(transactionIdDiffere);
 		
 		
 		
@@ -58,7 +58,7 @@ public class ScheduledJob extends QuartzJobBean{
 		//update comptecourant
 		compteCourantRep.ChangeSoldeCompteCourantByRib(newSoldetransferFrom, transferFrom);
 		compteCourantRep.ChangeSoldeCompteCourantByRib(newSoldetransferTo, transferTo);
-		transactionRep.ajouterTransaction(transferFrom, "Virement_Différé", montant,motif, "virement effectué avec succès", montant +" Dinars Transféré", currentDateTime,newSoldetransferFrom);
+		transactionRep.ajouterTransaction(transferFrom, "Virement_Différé", montant, motif, "virement différé effectué avec succès", montant +" Dinars Transféré", currentDateTime);
 		
 		System.out.println(currentDateTime);
 			
