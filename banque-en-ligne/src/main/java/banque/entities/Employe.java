@@ -13,14 +13,28 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Getter
+@Setter
 
 @Entity	
 @Table(name="Employe")
@@ -70,13 +84,17 @@ public class Employe implements Serializable{
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "Employe")
 	private List<Formation_Details> Formations_Details;
 	
-	@ManyToMany(mappedBy="EmployesSalaires",cascade = CascadeType.ALL)
-	private Set<Salaire> Salaires;
 	
 	@OneToMany(mappedBy = "EmployeConges")
 	private Set<Conge> Conges;
 	
 	@OneToMany(mappedBy = "EmployeNotifications")
 	private Set<Notification> Notifications;
+	
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_salaire", referencedColumnName = "idSalaire")
+ 
+    private Salaire salaire;
+
 	
 }
