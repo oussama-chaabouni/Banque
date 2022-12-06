@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import banque.entities.CompteCourant;
+import banque.entities.CompteEpargne;
 import banque.entities.Transaction;
 import banque.entities.TypeTransaction;
 import banque.repositories.CompteCourantRepository;
+import banque.repositories.CompteEpargneRepository;
 import banque.repositories.TransactionRepository;
 
 @Service
@@ -18,6 +20,8 @@ public class TransactionServiceImpl implements TransactionService {
 	TransactionRepository TransactionRep;
 	@Autowired
 	CompteCourantRepository CompteCourantRep;
+	@Autowired
+	CompteEpargneRepository CompteEpargneRep;
 
 
 	@Override
@@ -56,22 +60,28 @@ public class TransactionServiceImpl implements TransactionService {
 	}
 
 	@Override
-	public int updateTypeTransactBycompteCourantRib(TypeTransaction typeTransaction, long rib) {
+	public int updateTypeTransactBycompteCourantRib(TypeTransaction typeTransaction, String rib) {
 		return TransactionRep.updateTypeTransactionBycompteCourantRib(typeTransaction,rib);
 	}
 
 	@Override
-	public int deleteTransactByTypeTransactionAndRibc(TypeTransaction typeTransaction, long rib) {
+	public int deleteTransactByTypeTransactionAndRibc(TypeTransaction typeTransaction, String rib) {
 		return TransactionRep.deleteTransactionByTypeTransactionAndRibc(typeTransaction, rib);
 	}
 
 	@Override
-	public String nameOfUserByRib(long rib) {
+	public String nameOfUserByRib(String rib) {
 		CompteCourant Cc = new CompteCourant();
 		
 		return CompteCourantRep.NombyRib(rib);
 	}
 	
+	@Override
+	public String nameOfUserByRibEpargne(String rib) {
+		CompteEpargne Cc = new CompteEpargne();
+		
+		return CompteEpargneRep.NombyRib(rib);
+	}
 
 
 

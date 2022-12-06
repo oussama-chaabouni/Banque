@@ -42,7 +42,7 @@ public class CompteEpargne implements Serializable{
 	private long idCompteEpargne;
 	
 	@Column(name = "rib")
-	private long rib;
+	private String rib;
 	
 	@Column(name = "IBANE")
 	private String IBANE;
@@ -58,7 +58,8 @@ public class CompteEpargne implements Serializable{
 	private TypeEpargne TypeEpargne;
 	
 	@ManyToOne
-	private Client ClientEpargnes;
+    @JoinColumn(name = "nom_client")
+    private Client clientepargne;
 	
 	@OneToMany(mappedBy = "EpargneAssurances")
 	private Set<AssuranceCE> AssurancesCE;

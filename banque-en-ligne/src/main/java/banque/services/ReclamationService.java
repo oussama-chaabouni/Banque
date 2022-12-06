@@ -14,7 +14,7 @@ public interface ReclamationService {
 	void deleteReclamation(Long id);
 	Reclamation updateReclamation(Reclamation r);
 	
-	void ajouterRec(long rib,String typeTransaction ,float montant,String motif,String statut, String raison,LocalDateTime creeLe);
+	void ajouterRec(String rib,String typeTransaction ,float montant,String motif,String statut, String raison,LocalDateTime creeLe);
 
 	
 

@@ -32,7 +32,7 @@ public class Payement implements Serializable{
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idPayement;
-	private long rib;
+	private String rib;
 	private String beneficiaire;
 	private long beneficiaireRib;
 	private float montant;

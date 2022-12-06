@@ -41,7 +41,7 @@ public class Reclamation implements Serializable{
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idReclamation;
-	private long rib;
+	private String rib;
 	@Enumerated(EnumType.STRING)
     private TypeTransaction typeTransaction;
 	private float montant;

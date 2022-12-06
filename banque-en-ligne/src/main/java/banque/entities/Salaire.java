@@ -36,23 +36,26 @@ public class Salaire implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "idSalaire")
-	private long idSalaire;
+	@Column(name = "idsalaire")
+	private long idsalaire;
 	
-	@Column(name = "Salaire")
-	private float Salaire;
+	@Column(name = "nomemploye")
+	private String nomemploye;
 	
-	@Column(name = "SalaireNet")
-	private float SalaireNet;
+	@Column(name = "salaire")
+	private float salaire;
 	
-	@Column(name = "NbHeureSup")
-	private float NbHeureSup;
+	@Column(name = "salairenet")
+	private float salairenet;
 	
-	@Column(name = "PrixHeureSup")
-	private float PrixHeureSup;
+	@Column(name = "nbheuresup")
+	private float nbheuresup;
 	
-	@Column(name = "TotalTax")
-	private float TotalTax;
+	@Column(name = "prixheuresup")
+	private float prixheuresup;
+	
+	@Column(name = "totaltax")
+	private float totaltax;
 	
 	@JsonIgnore
 	@OneToOne(mappedBy = "salaire")

@@ -25,19 +25,19 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 	
 	@Modifying
 	@Query("update Transaction t set t.typeTransaction = :typetr where t.rib = :rib")
-	int updateTypeTransactionBycompteCourantRib(@Param("typetr") TypeTransaction typeTransaction , @Param("rib") long rib);
+	int updateTypeTransactionBycompteCourantRib(@Param("typetr") TypeTransaction typeTransaction , @Param("rib") String rib);
 	
 	@Modifying
 	@Query("DELETE FROM Transaction t WHERE t.typeTransaction= :typeTr AND t.rib = :rib")
-	int deleteTransactionByTypeTransactionAndRibc(@Param("typeTr") TypeTransaction typeTransaction, @Param("rib") long rib);
+	int deleteTransactionByTypeTransactionAndRibc(@Param("typeTr") TypeTransaction typeTransaction, @Param("rib") String rib);
 	
 	
 	@Modifying
 	@Query(value = "INSERT INTO transaction(rib,beneficiairerib,type_transaction,montant,motif,statut, code_raison,date_operation)" +
 			"VALUES(:rib,:beneficiairerib,:type_transaction,:montant,:motif,:statut, :code_raison,:date_operation)", nativeQuery= true )
 	void ajouterTransaction(
-			@Param("rib") long rib,
-			@Param("beneficiairerib") long beneficiairerib,
+			@Param("rib") String rib,
+			@Param("beneficiairerib") String beneficiairerib,
 			@Param("type_transaction") String type_transaction,
 			@Param("montant") float montant,
 			@Param("motif") String motif,
@@ -64,7 +64,7 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 	
 	//value = "SELECT transaction_id FROM Transaction WHERE created_at = :created_at", nativeQuery = true
 	@Query(value = "SELECT MAX(id_transaction) FROM Transaction  WHERE rib =:rib ", nativeQuery= true) 
-	long findTopByOrderByIdTransactionDesc(@Param("rib") long rib );
+	long findTopByOrderByIdTransactionDesc(@Param("rib") String rib );
 	
 	@Query("SELECT dateOperation FROM Transaction t WHERE t.idTransaction =:idTransaction") 
 	LocalDateTime getDateDebutDuDecouvert(@Param("idTransaction") long idTransaction );

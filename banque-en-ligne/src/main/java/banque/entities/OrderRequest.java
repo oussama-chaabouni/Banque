@@ -25,7 +25,7 @@ public class OrderRequest {
 	
 	long rib; //zedet hedhi
 	String customerName; //beneficiaire
-	long customerRib;
+	String customerRib;
 	BigInteger amount;
 	String motif; //w hedhi
 	

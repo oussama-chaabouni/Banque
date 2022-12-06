@@ -14,19 +14,19 @@ import banque.entities.CompteCourant;
 
 @Transactional
 @Repository
-public interface CompteCourantRepository extends JpaRepository<CompteCourant, Long> {
+public interface CompteCourantRepository extends CrudRepository<CompteCourant, Long> {
 	
 	
 	@Query("SELECT Solde FROM CompteCourant cc WHERE cc.rib= :rib")
-	float getSoldeCompteCourant(@Param("rib") long rib);
+	float getSoldeCompteCourant(@Param("rib") String rib);
 	
 	@Modifying
 	@Query("update CompteCourant cc set cc.Solde = :new_solde where cc.rib = :rib" )
-	void ChangeSoldeCompteCourantByRib(@Param("new_solde")float new_solde,@Param("rib") long ribc );
+	void ChangeSoldeCompteCourantByRib(@Param("new_solde")float new_solde,@Param("rib") String ribc );
 	
 	
 	@Query(value = "SELECT nom_client FROM compte_courant  WHERE rib =:rib ", nativeQuery= true)
-	String NombyRib(@Param("rib") long rib);
+	String NombyRib(@Param("rib") String rib);
 	
 
 }

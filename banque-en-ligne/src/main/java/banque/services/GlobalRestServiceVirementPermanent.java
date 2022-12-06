@@ -48,8 +48,8 @@ public class GlobalRestServiceVirementPermanent {
 
 public void schedule(JobDataVirementPermanent data) {
 	
-	long transferFrom = data.getTransferFrom();
-	long transferTo = data.getTransferTo();
+	String transferFrom = data.getTransferFrom();
+	String transferTo = data.getTransferTo();
 	float montant = data.getMontant();
 	String motif = data.getMotif();
 	LocalDateTime startTime = data.getStartTime();
@@ -71,17 +71,14 @@ public void schedule(JobDataVirementPermanent data) {
 	scheduledInfoVirementPermanent.setDuree(duree);
 	scheduledInfoVirementPermanent.setPeriode(periode);
 	
-	
-	String transfer_from= Long.toString(transferFrom); 
-	String transfer_to= Long.toString(transferTo); 
-	
+
 	JobDetail detail = JobBuilder.newJob(ScheduledJobVirementPermanent.class)
-			.withIdentity(transfer_from,transfer_to)
+			.withIdentity(transferFrom,transferTo)
 			.usingJobData(dataMap)
 			.storeDurably(false)
 			.build();
 	
-	Trigger trigger = TriggerBuilder.newTrigger().withIdentity(transfer_from,transfer_to)
+	Trigger trigger = TriggerBuilder.newTrigger().withIdentity(transferFrom,transferTo)
 			.startAt(Date.from(zonedDateTime.toInstant()))
 			//.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInHours(periode*24).withRepeatCount(duree))
 			.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(periode).withRepeatCount(duree))

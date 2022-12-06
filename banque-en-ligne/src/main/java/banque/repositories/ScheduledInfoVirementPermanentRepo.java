@@ -13,10 +13,10 @@ public interface ScheduledInfoVirementPermanentRepo extends CrudRepository<Sched
 	long getTransactionIdPermanent();
 	
 	@Query(value = "SELECT transfer_from FROM Scheduled_info_virement_permanent WHERE id_transaction =:id_transaction ", nativeQuery= true) 
-	long getTransferFrom(@Param("id_transaction") long id_transaction );
+	String getTransferFrom(@Param("id_transaction") long id_transaction );
 	
 	@Query(value = "SELECT transfer_to FROM Scheduled_info_virement_permanent WHERE id_transaction =:id_transaction ", nativeQuery= true) 
-	long getTransferTo(@Param("id_transaction") long id_transaction );
+	String getTransferTo(@Param("id_transaction") long id_transaction );
 	
 	@Query(value = "SELECT montant FROM Scheduled_info_virement_permanent WHERE id_transaction =:id_transaction ", nativeQuery= true) 
 	float getMontant(@Param("id_transaction") long id_transaction );

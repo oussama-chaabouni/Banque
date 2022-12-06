@@ -19,7 +19,7 @@ public interface PayementRepository extends CrudRepository<Payement, Long>{
 	@Query(value = "INSERT INTO payement(rib,beneficiaire, beneficiaire_rib,montant,motif,statut, code_raison,date_operation)" +
 			"VALUES(:rib,:beneficiaire, :beneficiaire_rib, :montant, :motif, :statut, :code_raison, :date_operation)", nativeQuery= true )
 	void ajouterPayement(
-			@Param("rib") long rib,
+			@Param("rib") String rib,
 			@Param("beneficiaire") String beneficiaire,
 			@Param("beneficiaire_rib") String beneficiaire_rib,
 			@Param("montant") float montant,

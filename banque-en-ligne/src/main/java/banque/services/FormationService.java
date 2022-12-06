@@ -19,6 +19,9 @@ public class FormationService {
 	FormationRepository FormationRepo;
 	
 	@Autowired
+	FormationDetailsRepository FormationDetailsRepo;
+	
+	@Autowired
 	EmployeeRepository EmployeeRepository;
 	
 	@Autowired
@@ -28,6 +31,17 @@ public class FormationService {
 		List<Formation> a = FormationRepo.findAll();
 
 		for (Formation formations : a) {
+			//L.info("Formation de détails  :" + formations);
+
+		}
+		return a;
+	}
+	
+	/* voir tous les Formations Details */
+	public List<Formation_Details> findallDetails() {
+		List<Formation_Details> a = FormationDetailsRepo.findAll();
+
+		for (Formation_Details formations_details : a) {
 			//L.info("Formation de détails  :" + formations);
 
 		}

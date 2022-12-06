@@ -28,8 +28,8 @@ public class ScheduledInfoVirementPermanent {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idTransaction;
-	private long transferFrom;
-	private long transferTo;
+	private String transferFrom;
+	private String transferTo;
 	private float montant;
 	private String motif;
 	private LocalDateTime startTime;

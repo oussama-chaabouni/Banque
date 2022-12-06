@@ -43,8 +43,8 @@ public class ScheduledJobVirementPermanent extends QuartzJobBean{
 		
 //je recupere de ma table
 		long transactionIdPermanent= scheduledInfoVirementPermanentRep.getTransactionIdPermanent();
-		long transferFrom = scheduledInfoVirementPermanentRep.getTransferFrom(transactionIdPermanent);
-		long transferTo = scheduledInfoVirementPermanentRep.getTransferTo(transactionIdPermanent);
+		String transferFrom = scheduledInfoVirementPermanentRep.getTransferFrom(transactionIdPermanent);
+		String transferTo = scheduledInfoVirementPermanentRep.getTransferTo(transactionIdPermanent);
 		float montant = scheduledInfoVirementPermanentRep.getMontant(transactionIdPermanent);
 		String motif = scheduledInfoVirementPermanentRep.getMotif(transactionIdPermanent);		
 

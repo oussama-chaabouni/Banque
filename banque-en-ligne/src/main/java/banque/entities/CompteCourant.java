@@ -45,7 +45,7 @@ public class CompteCourant implements Serializable{
 	
 	
 	@Column(name = "rib")
-	private long rib;
+	private String rib;
 	
 	
 	@Column(name = "IBANC")

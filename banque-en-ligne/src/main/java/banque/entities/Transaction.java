@@ -44,7 +44,7 @@ public class Transaction implements Serializable{
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idTransaction;
-	private long rib;
+	private String rib;
 	private String beneficiairerib;
 	@Enumerated(EnumType.STRING)
 	private TypeTransaction typeTransaction;

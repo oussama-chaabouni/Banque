@@ -31,8 +31,8 @@ public class SalaireServiceImpl implements SalaireService{
 						//Empo       //SALAIRE
 			float salaireNet = 0;
 			Salaire s  = e.getSalaire();
-			salaireNet=s.getSalaire()+s.getPrixHeureSup()*s.getNbHeureSup()-s.getTotalTax();
-			s.setSalaireNet(salaireNet);
+			salaireNet=s.getSalaire()+s.getPrixheuresup()*s.getNbheuresup()-s.getTotaltax();
+			s.setSalairenet(salaireNet);
 			System.out.println("salaire Employee "+ e.getNom() +" est égal : "+salaireNet);
 			SR.save(s);  
 	}}

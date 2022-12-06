@@ -30,16 +30,25 @@ public class FormationController {
 	
 	@Autowired 
 	FormationService Fs;
+
 	@Autowired
 	MailService Ms;
 	
 	
 	/* liste des formations */
 	@GetMapping("/retrieve-all-formations")
-	public List <Formation> getFormations() throws MailjetException{
+	public List <Formation> getFormations() {
 		//Ms.envoyerMailPersonnelDateExamen();
 	return  Fs.findall();
 	}
+	
+	/* liste des formations */
+	@GetMapping("/retrieve-all-formations-details")
+	public List <Formation_Details> getFormationsDetails(){
+		//Ms.envoyerMailPersonnelDateExamen();
+	return  Fs.findallDetails();
+	}
+	
 		
 	// Ajout formation
 	@PostMapping("/add-formation")
@@ -64,8 +73,8 @@ public class FormationController {
 	}
 	
 	// participer dans une formation en utilisant id formation et id employe*/
-	@PostMapping("/participer/{idF}/{idp}")
-	public Formation_Details ParticiperFormation(@PathVariable(name="idF") long id,@PathVariable(name="idp") long idp )
+	@PostMapping("/participer/{id}/{idp}")
+	public Formation_Details ParticiperFormation(@PathVariable(name="id") long id,@PathVariable(name="idp") long idp )
 	{ 
 			
 		return Fs.ParticiperFormation(id,idp);
@@ -78,15 +87,15 @@ public class FormationController {
 	}
 		
 	//  connaitre les employees participée au formation en utilisant id formation
-	@GetMapping(value="/afficherEmployesParticipant/{idf}")
-	public List <Formation_Details> afficherEmployesParticipants(@PathVariable(name="idf") Long id){	
+	@GetMapping(value="/afficherEmployesParticipant/{id}")
+	public List <Formation_Details> afficherEmployesParticipants(@PathVariable(name="id") Long id){	
 		return  Fs.ParticiperAuformation(id);
 	}
 			
 	// Desinscrire l'employee du formation
 	@DeleteMapping(value="/desinscrire/{idp}/{idf}")
-	public void  desincrireFormation(@PathVariable(name="idp") long idp,@PathVariable(name="idf") long idf){
-		Fs.desinscrireFormation(idp, idf);
+	public void  desincrireFormation(@PathVariable(name="idp") long idp,@PathVariable(name="id") long id){
+		Fs.desinscrireFormation(idp, id);
 			
 	}
 			

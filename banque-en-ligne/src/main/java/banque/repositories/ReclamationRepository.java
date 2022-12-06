@@ -19,7 +19,7 @@ public interface ReclamationRepository extends CrudRepository<Reclamation, Long>
 	@Query(value = "INSERT INTO reclamation(rib,type_transaction,montant,motif,statut, code_raison,date_operation)" +
 			"VALUES(:rib,:type_transaction,:montant,:motif,:statut,:code_raison,:date_operation)", nativeQuery= true )
 	void ajouterReclamation(
-			@Param("rib") long rib,
+			@Param("rib") String rib,
 			@Param("type_transaction") String type_transaction,
 			@Param("montant") float montant,
 			@Param("motif") String motif,

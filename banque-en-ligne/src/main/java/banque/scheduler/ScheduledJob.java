@@ -42,8 +42,8 @@ public class ScheduledJob extends QuartzJobBean{
 		
 //je recupere de ma table
 		long transactionIdDiffere= scheduledInfoRep.getTransactionIdDiffere();
-		long transferFrom = scheduledInfoRep.getTransferFrom(transactionIdDiffere);
-		long transferTo = scheduledInfoRep.getTransferTo(transactionIdDiffere);
+		String transferFrom = scheduledInfoRep.getTransferFrom(transactionIdDiffere);
+		String transferTo = scheduledInfoRep.getTransferTo(transactionIdDiffere);
 		float montant = scheduledInfoRep.getMontant(transactionIdDiffere);	
 		String motif = scheduledInfoRep.getMotif(transactionIdDiffere);
 		

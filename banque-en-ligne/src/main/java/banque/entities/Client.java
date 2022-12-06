@@ -77,7 +77,7 @@ public class Client implements Serializable {
 	@OneToMany(mappedBy = "client")
     private Set<CompteCourant> comptecourants = new HashSet<>();
 	
-	@OneToMany(mappedBy = "ClientEpargnes")
-	private Set<CompteEpargne> ClientEpargnes;
+	@OneToMany(mappedBy = "clientepargne")
+	private Set<CompteEpargne> clientepargnes = new HashSet<>();
 	
 }

@@ -53,8 +53,8 @@ public class GlobalRestService {
 
 public void schedule(JobData data) {
 	
-	long transferFrom = data.getTransferFrom();
-	long transferTo = data.getTransferTo();
+	String transferFrom = data.getTransferFrom();
+	String transferTo = data.getTransferTo();
 	float montant = data.getMontant();
 	String motif = data.getMotif();
 	LocalDateTime startTime = data.getStartTime();
@@ -76,16 +76,13 @@ public void schedule(JobData data) {
 	scheduledInfo.setMotif(motif);
 	scheduledInfo.setStartTime(startTime);
 	
-	String transfer_from= Long.toString(transferFrom); 
-	String transfer_to= Long.toString(transferTo); 
-	
 	JobDetail detail = JobBuilder.newJob(ScheduledJob.class)
-			.withIdentity(transfer_from,transfer_to)
+			.withIdentity(transferFrom,transferTo)
 			.usingJobData(dataMap)
 			.storeDurably(false)
 			.build();
 	
-	Trigger trigger = TriggerBuilder.newTrigger().withIdentity(transfer_from,transfer_to)
+	Trigger trigger = TriggerBuilder.newTrigger().withIdentity(transferFrom,transferTo)
 			.startAt(Date.from(zonedDateTime.toInstant()))
 			.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(1).withRepeatCount(0))
 			.build();
