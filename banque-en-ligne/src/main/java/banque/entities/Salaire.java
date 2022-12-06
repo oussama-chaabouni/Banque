@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -52,6 +54,7 @@ public class Salaire implements Serializable{
 	@Column(name = "TotalTax")
 	private float TotalTax;
 	
+	@JsonIgnore
 	@OneToOne(mappedBy = "salaire")
     private Employe employe;
 	

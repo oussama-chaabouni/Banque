@@ -34,7 +34,7 @@ public class Payement implements Serializable{
 	private long idPayement;
 	private long rib;
 	private String beneficiaire;
-	private String beneficiaireRib;
+	private long beneficiaireRib;
 	private float montant;
 	private String motif;
 	private String statut;

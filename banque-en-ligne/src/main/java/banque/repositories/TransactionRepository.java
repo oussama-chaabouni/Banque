@@ -9,6 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import banque.entities.Transaction;
 import banque.entities.TypeTransaction;
@@ -32,10 +33,11 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 	
 	
 	@Modifying
-	@Query(value = "INSERT INTO transaction(rib,type_transaction,montant,motif,statut, code_raison,date_operation)" +
-			"VALUES(:rib,:type_transaction,:montant,:motif,:statut, :code_raison,:date_operation)", nativeQuery= true )
+	@Query(value = "INSERT INTO transaction(rib,beneficiairerib,type_transaction,montant,motif,statut, code_raison,date_operation)" +
+			"VALUES(:rib,:beneficiairerib,:type_transaction,:montant,:motif,:statut, :code_raison,:date_operation)", nativeQuery= true )
 	void ajouterTransaction(
 			@Param("rib") long rib,
+			@Param("beneficiairerib") long beneficiairerib,
 			@Param("type_transaction") String type_transaction,
 			@Param("montant") float montant,
 			@Param("motif") String motif,
@@ -71,7 +73,21 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 	//@Query(value = "SELECT transaction_id FROM Transaction WHERE created_at = :created_at", nativeQuery = true)
 	//Long findTopByOrderByTransactionIdDesc(@Param("created_at") LocalDateTime created_at);
 	
+	
+
+	
+	//	float AGIOS = ((montantdudecouvert * duréedudecouvert * 0,12%)/ 365) ;		
+
+	@Modifying
+	@Query(value = "INSERT INTO Simulateuragios(montantdudecouvert,dureedudecouvert,tauxannueleffectifglobal,nombredejoursdanslannée,totalagios)" +
+			"VALUES(:montantdudecouvert,:dureedudecouvert,:tauxannueleffectifglobal,:nombredejoursdanslannée, :totalagios)", nativeQuery= true )
+	void ajouterAgios(@Param("montantdudecouvert") float montantdudecouvert,
+			@Param("dureedudecouvert") long dureedudecouvert,
+			@Param("tauxannueleffectifglobal") float tauxAnnuelEffectifGlobal,
+			@Param("nombredejoursdanslannée") int nombredejoursdanslannée,
+			@Param("totalagios") float totalagios);
 
 	
 	
-}
+	
+}	

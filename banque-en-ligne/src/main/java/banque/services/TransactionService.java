@@ -22,5 +22,7 @@ public interface TransactionService {
 	List<Transaction> retrieveTransactsByTypeTransaction(TypeTransaction typeTransaction);
 	int updateTypeTransactBycompteCourantRib(TypeTransaction typeTransaction ,long rib);
 	int deleteTransactByTypeTransactionAndRibc(TypeTransaction typeTransaction,long rib);
+	String nameOfUserByRib(long rib);
+	
 	
 }

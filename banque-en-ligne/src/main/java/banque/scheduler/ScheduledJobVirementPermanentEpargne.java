@@ -13,12 +13,13 @@ import org.springframework.stereotype.Component;
 
 import banque.entities.ScheduledInfo;
 import banque.repositories.CompteCourantRepository;
+import banque.repositories.CompteEpargneRepository;
 import banque.repositories.ScheduledInfoRepo;
 import banque.repositories.ScheduledInfoVirementPermanentRepo;
 import banque.repositories.TransactionRepository;
 
 @Component
-public class ScheduledJobVirementPermanent extends QuartzJobBean{
+public class ScheduledJobVirementPermanentEpargne extends QuartzJobBean{
 
 	LocalDateTime currentDateTime = LocalDateTime.now();
 	
@@ -26,7 +27,7 @@ public class ScheduledJobVirementPermanent extends QuartzJobBean{
 	TransactionRepository transactionRep;
 	
 	@Autowired
-	CompteCourantRepository compteCourantRep;
+	CompteEpargneRepository compteEpargneRep;
 	
 	@Autowired
 	ScheduledInfoVirementPermanentRepo scheduledInfoVirementPermanentRep;
@@ -54,14 +55,14 @@ public class ScheduledJobVirementPermanent extends QuartzJobBean{
 		
 		
 		//update solde
-		float currentSoldeofCompteCourantTransferingFrom = compteCourantRep.getSoldeCompteCourant(transferFrom);
-		float currentSoldeofCompteCourantTransferingTo = compteCourantRep.getSoldeCompteCourant(transferTo);
-		float newSoldetransferFrom = currentSoldeofCompteCourantTransferingFrom - montant;
-		float newSoldetransferTo = currentSoldeofCompteCourantTransferingTo + montant;
+		float currentSoldeofCompteEpargneTransferingFrom = compteEpargneRep.getSoldeCompteEpargne(transferFrom);
+		float currentSoldeofCompteEpargneTransferingTo = compteEpargneRep.getSoldeCompteEpargne(transferTo);
+		float newSoldetransferFrom = currentSoldeofCompteEpargneTransferingFrom - montant;
+		float newSoldetransferTo = currentSoldeofCompteEpargneTransferingTo + montant;
 		
 		//update comptecourant
-		compteCourantRep.ChangeSoldeCompteCourantByRib(newSoldetransferFrom, transferFrom);
-		compteCourantRep.ChangeSoldeCompteCourantByRib(newSoldetransferTo, transferTo);
+		compteEpargneRep.ChangeSoldeCompteEpargneByRib(newSoldetransferFrom, transferFrom);
+		compteEpargneRep.ChangeSoldeCompteEpargneByRib(newSoldetransferTo, transferTo);
 		transactionRep.ajouterTransaction(transferFrom,transferTo, "Virement_Permanent", montant, motif, "virement Permanent effectué avec succès", montant +" Dinars Transféré", currentDateTime);
 		
 		System.out.println(currentDateTime);

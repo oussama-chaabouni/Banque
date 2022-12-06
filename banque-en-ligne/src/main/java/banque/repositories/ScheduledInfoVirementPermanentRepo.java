@@ -21,7 +21,7 @@ public interface ScheduledInfoVirementPermanentRepo extends CrudRepository<Sched
 	@Query(value = "SELECT montant FROM Scheduled_info_virement_permanent WHERE id_transaction =:id_transaction ", nativeQuery= true) 
 	float getMontant(@Param("id_transaction") long id_transaction );
 	
-	@Query(value = "SELECT motif FROM Scheduled_info WHERE id_transaction =:id_transaction ", nativeQuery= true) 
+	@Query(value = "SELECT motif FROM Scheduled_info_virement_permanent WHERE id_transaction =:id_transaction ", nativeQuery= true) 
 	String getMotif(@Param("id_transaction") long id_transaction );
 	
 	@Query(value = "SELECT duree FROM Scheduled_info_virement_permanent WHERE id_transaction =:id_transaction ", nativeQuery= true) 

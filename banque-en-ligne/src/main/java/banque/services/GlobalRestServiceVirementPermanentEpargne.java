@@ -22,10 +22,10 @@ import org.springframework.stereotype.Service;
 import banque.entities.ScheduledInfoVirementPermanent;
 import banque.repositories.ScheduledInfoVirementPermanentRepo;
 import banque.scheduler.JobDataVirementPermanent;
-import banque.scheduler.ScheduledJobVirementPermanent; 
+import banque.scheduler.ScheduledJobVirementPermanentEpargne; 
 
 @Service
-public class GlobalRestServiceVirementPermanent {
+public class GlobalRestServiceVirementPermanentEpargne {
 	
 	@Autowired
 	Scheduler quartzScheduler;
@@ -61,7 +61,7 @@ public void schedule(JobDataVirementPermanent data) {
 	JobDataMap dataMap = new JobDataMap();
 	//dataMap.put("test", "this is a test");
 	
-	System.out.println("xxx : "+periode);
+	
 	ScheduledInfoVirementPermanent  scheduledInfoVirementPermanent = new ScheduledInfoVirementPermanent();
 	scheduledInfoVirementPermanent.setTransferFrom(transferFrom);
 	scheduledInfoVirementPermanent.setTransferTo(transferTo);
@@ -75,7 +75,7 @@ public void schedule(JobDataVirementPermanent data) {
 	String transfer_from= Long.toString(transferFrom); 
 	String transfer_to= Long.toString(transferTo); 
 	
-	JobDetail detail = JobBuilder.newJob(ScheduledJobVirementPermanent.class)
+	JobDetail detail = JobBuilder.newJob(ScheduledJobVirementPermanentEpargne.class)
 			.withIdentity(transfer_from,transfer_to)
 			.usingJobData(dataMap)
 			.storeDurably(false)

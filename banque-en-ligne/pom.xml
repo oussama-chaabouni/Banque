@@ -68,7 +68,19 @@
 			<optional>true</optional>
 </dependency>
 
+<!-- razorpay -->
+<dependency>
+			<groupId>com.razorpay</groupId>
+			<artifactId>razorpay-java</artifactId>
+			<version>1.4.2</version> 
+		</dependency>
 
+<!-- MAIL -->
+<dependency>
+            <groupId>com.mailjet</groupId>
+            <artifactId>mailjet-client</artifactId>
+            <version>5.2.0</version>
+        </dependency>
 
 		
 	</dependencies>

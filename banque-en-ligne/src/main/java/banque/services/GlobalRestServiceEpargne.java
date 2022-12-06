@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -19,19 +20,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import banque.entities.ScheduledInfoVirementPermanent;
-import banque.repositories.ScheduledInfoVirementPermanentRepo;
-import banque.scheduler.JobDataVirementPermanent;
-import banque.scheduler.ScheduledJobVirementPermanent; 
+import banque.entities.ScheduledInfo;
+import banque.repositories.ScheduledInfoRepo;
+import banque.repositories.TransactionRepository;
+import banque.scheduler.JobData;
+import banque.scheduler.ScheduledJobEpargne; 
 
 @Service
-public class GlobalRestServiceVirementPermanent {
+public class GlobalRestServiceEpargne {
+	
+	@Autowired
+	TransactionRepository transactionRepo;
 	
 	@Autowired
 	Scheduler quartzScheduler;
 	
 	@Autowired
-	ScheduledInfoVirementPermanentRepo scheduledInfoVirementPermanentRepo;
+	ScheduledInfoRepo scheduledInfoRepo;
 	
 	@PostConstruct public void postContruct() { try {quartzScheduler.start(); }
 	catch(SchedulerException exception) {
@@ -46,36 +51,35 @@ public class GlobalRestServiceVirementPermanent {
 	
 
 
-public void schedule(JobDataVirementPermanent data) {
+public void schedule(JobData data) {
 	
 	long transferFrom = data.getTransferFrom();
 	long transferTo = data.getTransferTo();
 	float montant = data.getMontant();
 	String motif = data.getMotif();
 	LocalDateTime startTime = data.getStartTime();
-	int duree = data.getDuree(); //counter = 9addech tet3awed men mara //par ex tetexecuta kol 30j
-	int periode = data.getPeriode(); //bin counters 9adech testanna bech tetexecuta
+	
+	
+	//int counter = data.getCounter(); //counter = 9addech tet3awed men mara //par ex tetexecuta kol 30j
+	//int gapDuration = data.getGapDuration(); //bin counters 9adech testanna bech tetexecuta
 	
 	ZonedDateTime zonedDateTime =  ZonedDateTime.of(data.getStartTime(),ZoneId.of("Europe/Paris"));
 	
 	JobDataMap dataMap = new JobDataMap();
 	//dataMap.put("test", "this is a test");
 	
-	System.out.println("xxx : "+periode);
-	ScheduledInfoVirementPermanent  scheduledInfoVirementPermanent = new ScheduledInfoVirementPermanent();
-	scheduledInfoVirementPermanent.setTransferFrom(transferFrom);
-	scheduledInfoVirementPermanent.setTransferTo(transferTo);
-	scheduledInfoVirementPermanent.setMontant(montant);
-	scheduledInfoVirementPermanent.setMotif(motif);
-	scheduledInfoVirementPermanent.setStartTime(startTime);
-	scheduledInfoVirementPermanent.setDuree(duree);
-	scheduledInfoVirementPermanent.setPeriode(periode);
 	
+	ScheduledInfo  scheduledInfo = new ScheduledInfo();
+	scheduledInfo.setTransferFrom(transferFrom);
+	scheduledInfo.setTransferTo(transferTo);
+	scheduledInfo.setMontant(montant);
+	scheduledInfo.setMotif(motif);
+	scheduledInfo.setStartTime(startTime);
 	
 	String transfer_from= Long.toString(transferFrom); 
 	String transfer_to= Long.toString(transferTo); 
 	
-	JobDetail detail = JobBuilder.newJob(ScheduledJobVirementPermanent.class)
+	JobDetail detail = JobBuilder.newJob(ScheduledJobEpargne.class)
 			.withIdentity(transfer_from,transfer_to)
 			.usingJobData(dataMap)
 			.storeDurably(false)
@@ -83,8 +87,7 @@ public void schedule(JobDataVirementPermanent data) {
 	
 	Trigger trigger = TriggerBuilder.newTrigger().withIdentity(transfer_from,transfer_to)
 			.startAt(Date.from(zonedDateTime.toInstant()))
-			//.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInHours(periode*24).withRepeatCount(duree))
-			.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(periode).withRepeatCount(duree))
+			.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInMinutes(1).withRepeatCount(0))
 			.build();
 	
 	/*Trigger tt = TriggerBuilder.newTrigger().withIdentity(fruitName)
@@ -96,7 +99,7 @@ public void schedule(JobDataVirementPermanent data) {
 	
 	try {
 		quartzScheduler.scheduleJob(detail,trigger);
-		scheduledInfoVirementPermanentRepo.save(scheduledInfoVirementPermanent);
+		scheduledInfoRepo.save(scheduledInfo);
 		
 	} catch (SchedulerException e) {
 		
