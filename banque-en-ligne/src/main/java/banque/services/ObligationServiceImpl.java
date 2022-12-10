@@ -1,7 +1,10 @@
 package banque.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.math.BigDecimal;
 
 import banque.entities.CompteTitre;
 import banque.entities.Obligation;
@@ -71,10 +74,7 @@ public class ObligationServiceImpl implements IObligationService {
 
 	@Override
 	public Obligation addObligation(Obligation o, Long idt) {
-		
-		o.setTitreObligations(CompteTitreRepository.findById(idt).orElse(null));
-		
-		CompteTitre t=CompteTitreRepository.findById(idt).get();
+		o.setStatus(false);
 		ObligationRepository.save(o);
 		
 		return o;
@@ -84,5 +84,33 @@ public class ObligationServiceImpl implements IObligationService {
 	@Override
 	public Obligation retrieveObligation(long id) {
 		return ObligationRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	public List<Obligation> retrieveAllObligations() {
+		List<Obligation> Obligation = (List<Obligation>) ObligationRepository.findAll();
+		return Obligation;
+	}
+
+	@Override
+	public Obligation buyObligation(long id, Long idt) {
+		CompteTitre t=CompteTitreRepository.findById(idt).get();
+		Obligation o = ObligationRepository.findById(id).orElse(null);
+		if ( t.getSolde().compareTo(BigDecimal.valueOf(o.getValeurNominal())) >0) { 
+			
+			t.setSolde( t.getSolde().subtract(BigDecimal.valueOf(o.getValeurNominal()) ));
+			o.setTitreObligations(CompteTitreRepository.findById(idt).orElse(null));
+			o.setStatus(true);
+			ObligationRepository.save(o);
+		}else throw new UnsupportedOperationException("Le mantant du portefeuille n' est pas suffisant");
+		
+		
+		return o;
+	}
+	
+	@Override
+	public List <CompteTitre> retrieveCompteTitre(long id) {
+		List<CompteTitre> c = (List<CompteTitre>) CompteTitreRepository.findAll();
+		return c;
 	}
 }

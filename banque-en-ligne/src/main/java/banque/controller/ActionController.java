@@ -56,7 +56,7 @@ public class ActionController {
 	
 	@DeleteMapping("/sell-action/{action-id}")
 	@ResponseBody
-	public void sellAction(@PathVariable("action-id") long id) {
+	public void sellAction(@PathVariable("action-id") long id) throws IOException {
 	ActionService.sellAction(id);
 	}
 	
@@ -103,6 +103,12 @@ public class ActionController {
 		return  ActionService.portfolioVarTheorique(year,time,confiance);
 	}
 	
+	@GetMapping("/emails")
+	  @ResponseBody
+	  public List<String> retrieveAllEmails(){
+		return  ActionService.retrieveAllEmails();
+	}
+	
 	@GetMapping("/VarHistorique")
 	  @ResponseBody
 	  public HashMap<Object, Object> portfolioVarHistorique(@RequestParam int year,@RequestParam int time,@RequestParam double confiance) throws IOException{
@@ -114,6 +120,7 @@ public class ActionController {
 	  public HashMap<Object, Object>  movingAverage(@RequestParam String ticker,@RequestParam int periode )throws IOException{
 		return  ActionService.movingAverage(ticker,periode);
 	}
+
 	
 	@PostMapping("/history1")
 	  @ResponseBody

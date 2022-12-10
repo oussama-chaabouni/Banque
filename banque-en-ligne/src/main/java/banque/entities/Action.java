@@ -126,5 +126,18 @@ public class Action implements Serializable{
 	public Action() {
 		super();
 	}
+
+	public Action(String symbole, BigDecimal capital) {
+		super();
+		Symbole = symbole;
+		Capital = capital;
+	}
+
+	public Action(String symbole, BigDecimal capital, CompteTitre titreActions) {
+		super();
+		Symbole = symbole;
+		Capital = capital;
+		TitreActions = titreActions;
+	}
 	
 }

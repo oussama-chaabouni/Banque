@@ -21,8 +21,8 @@ public class Obligation implements Serializable{
 	@Column(name = "idObligation")
 	private long idObligation;
 	
-	@Column(name = "Montant")
-	private float Montant;
+	@Column(name = "Libelle")
+	private String Libelle;
 	
 	@Temporal(TemporalType.DATE)
 	@Column(name = "EchanceOblig")
@@ -43,6 +43,9 @@ public class Obligation implements Serializable{
 	@Column(name = "TauxRendement")
 	private float  TauxRendement;
 	
+	@Column(name = "status")
+	private boolean  status;
+	
 	@ManyToOne
 	private CompteTitre TitreObligations;
 
@@ -52,14 +55,6 @@ public class Obligation implements Serializable{
 
 	public void setIdObligation(long idObligation) {
 		this.idObligation = idObligation;
-	}
-
-	public float getMontant() {
-		return Montant;
-	}
-
-	public void setMontant(float montant) {
-		Montant = montant;
 	}
 
 	public Date getEchanceOblig() {
@@ -122,17 +117,34 @@ public class Obligation implements Serializable{
 		return serialVersionUID;
 	}
 
-	public Obligation(long idObligation, float montant, Date echanceOblig, float coupon, int maturite, float tauxActu,
-			float valeurNominal, float tauxRendement, CompteTitre titreObligations) {
+	public String getLibelle() {
+		return Libelle;
+	}
+
+	public void setLibelle(String libelle) {
+		Libelle = libelle;
+	}
+	
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+	public Obligation(long idObligation, String libelle, Date echanceOblig, float coupon, int maturite,
+			float tauxActu, float valeurNominal, float tauxRendement, boolean status, CompteTitre titreObligations) {
 		super();
 		this.idObligation = idObligation;
-		Montant = montant;
+		Libelle = libelle;
 		EchanceOblig = echanceOblig;
 		Coupon = coupon;
 		Maturite = maturite;
 		TauxActu = tauxActu;
 		ValeurNominal = valeurNominal;
 		TauxRendement = tauxRendement;
+		this.status = status;
 		TitreObligations = titreObligations;
 	}
 
