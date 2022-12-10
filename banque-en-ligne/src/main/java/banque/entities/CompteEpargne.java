@@ -1,6 +1,7 @@
 package banque.entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -13,7 +14,16 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 @Entity	
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name="CompteEpargne")
 public class CompteEpargne implements Serializable{
 	private static final long serialVersionUID = 1L;

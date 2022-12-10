@@ -1,7 +1,9 @@
 package banque.entities;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -19,7 +21,18 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 @Entity	
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name="Credit")
 public class Credit implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -34,16 +47,18 @@ public class Credit implements Serializable {
 	@Column(name = "DureeDuCredit")
 	private int DureeDuCredit;
 	
+	@Column(name = "Description")
+	private String Description;
+	
 	@Column(name = "Interet")
 	private float Interet;
 	
-	@Temporal(TemporalType.DATE)
 	@Column(name = "DatePremierPaiement")
-	private Date DatePremierPaiement;
+	private LocalDate DatePremierPaiement;
 	
-	@Temporal(TemporalType.DATE)
+	
 	@Column(name = "DateDernierPaiement")
-	private Date DateDernierPaiement;
+	private LocalDate DateDernierPaiement;
 	
 	@Column(name = "StatusCredit")
 	@Enumerated(EnumType.STRING)
@@ -56,16 +71,26 @@ public class Credit implements Serializable {
 	@Column(name = "Archive")
 	private boolean Archive;
 	
+	@Column(name = "Score")
+	private double Score;
+	
+	@JsonIgnore
 	@OneToMany(mappedBy = "CreditEcheances")
 	private Set<Echeance> Echeances;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy = "CreditAssurances")
 	private Set<AssuranceCredit> assurances;
 	
+	@JsonIgnore
 	@ManyToMany(cascade = CascadeType.ALL)
 	private Set<Employe> EmployesCredits;
 	
+	@JsonIgnore
 	@ManyToOne
 	private CompteCourant CourantCredits;
+	
+	
+	
 	
 }
