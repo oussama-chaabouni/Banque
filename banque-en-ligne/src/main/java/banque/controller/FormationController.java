@@ -42,7 +42,7 @@ public class FormationController {
 	return  Fs.findall();
 	}
 	
-	/* liste des formations */
+	/* liste des details formations */
 	@GetMapping("/retrieve-all-formations-details")
 	public List <Formation_Details> getFormationsDetails(){
 		//Ms.envoyerMailPersonnelDateExamen();
@@ -86,16 +86,16 @@ public class FormationController {
 		return  Fs.ListeFormationParIdEmploye(idp);
 	}
 		
-	//  connaitre les employees participée au formation en utilisant id formation
+	//  connaitre les employees participants au formation en utilisant id formation
 	@GetMapping(value="/afficherEmployesParticipant/{id}")
 	public List <Formation_Details> afficherEmployesParticipants(@PathVariable(name="id") Long id){	
-		return  Fs.ParticiperAuformation(id);
+		return  Fs.EmpParticipants(id);
 	}
 			
 	// Desinscrire l'employee du formation
 	@DeleteMapping(value="/desinscrire/{idp}/{idf}")
-	public void  desincrireFormation(@PathVariable(name="idp") long idp,@PathVariable(name="id") long id){
-		Fs.desinscrireFormation(idp, id);
+	public void  desincrireFormation(@PathVariable(name="idp") long idp,@PathVariable(name="idf") long idf){
+		Fs.desinscrireFormation(idp, idf);
 			
 	}
 			

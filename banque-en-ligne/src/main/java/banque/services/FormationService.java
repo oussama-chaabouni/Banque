@@ -37,6 +37,17 @@ public class FormationService {
 		return a;
 	}
 	
+	//findallMyFormation
+		public List<Formation> ListeFormationParIdEmploye(long idp) {
+			List<Formation_Details> a = FDR.ListeFormationParIdEmploye(idp);
+			List<Formation> mesFormation = new ArrayList();
+
+			for (Formation_Details formations : a) {
+				mesFormation.add(formations.getFormation());
+			}
+			return mesFormation;
+		}
+		
 	/* voir tous les Formations Details */
 	public List<Formation_Details> findallDetails() {
 		List<Formation_Details> a = FormationDetailsRepo.findAll();
@@ -48,8 +59,9 @@ public class FormationService {
 		return a;
 	}
 	
-	public List<Formation_Details> ParticiperAuformation(long idf) {
-		List<Formation_Details> a = FDR.ListePersonnelParticiperAuFormation(idf);
+	//afficher emp participants
+	public List<Formation_Details> EmpParticipants(long idf) {
+		List<Formation_Details> a = FDR.ListeEmployesParticiperAuFormation(idf);
 
 		for (Formation_Details formations : a) {
 		//	L.info("Formation de détails  :" + formations);
@@ -82,15 +94,8 @@ public class FormationService {
 		return FDR.save(F);
 
 	}
-	public List<Formation> ListeFormationParIdEmploye(long idp) {
-		List<Formation_Details> a = FDR.ListeFormationParIdEmploye(idp);
-		List<Formation> mesFormation = new ArrayList();
+	
 
-		for (Formation_Details formations : a) {
-			mesFormation.add(formations.getFormation());
-		}
-		return mesFormation;
-	}
 	
 	public void desinscrireFormation(long idp, long idf) {
 		FDR.DesInscriptionFormation(idp, idf);

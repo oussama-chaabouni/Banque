@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -35,6 +37,8 @@ public class Formation {
 	private Integer Duree; // Par jours
 	private String Description;
 	private Date Date_debut;
+	@Enumerated(EnumType.STRING)
+	private Etatformation etatformation;
 	
 
 	// Relation entre la Formation et technicien

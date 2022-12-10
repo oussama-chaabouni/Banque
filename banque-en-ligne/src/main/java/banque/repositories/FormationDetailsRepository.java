@@ -18,13 +18,14 @@ public interface FormationDetailsRepository extends JpaRepository<Formation_Deta
 	
 	@Query(value = "SELECT * FROM formation_details where id_employe =?1 and idf=?2 ", nativeQuery = true)
 	List<Formation_Details> verifInscriptionFormation(long idP,long idf);
+	
 	@Transactional
 	@Modifying(clearAutomatically = true)
 	@Query(value = "DELETE FROM formation_details WHERE id_employe=?1 and idf=?2 ", nativeQuery = true)
 	public void DesInscriptionFormation(long idP,long idf);
 	
 	@Query(value = "SELECT * FROM formation_details where idf=?1 ", nativeQuery = true)
-	List<Formation_Details> ListePersonnelParticiperAuFormation(long IdP);
+	List<Formation_Details> ListeEmployesParticiperAuFormation(long IdP);
 
 	
 	
