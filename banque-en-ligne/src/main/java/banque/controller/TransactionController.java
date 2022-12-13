@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 
 import com.mailjet.client.errors.MailjetException;
 
@@ -775,6 +776,20 @@ public class TransactionController {
 			
 			return totalagios;
 		}
+		
+		
+		@GetMapping("/payementcheque")
+		public String payementcheque (@RequestParam("montant") String  montant){
+
+			RestTemplate restTemplate = new RestTemplate();
+			String resmontant = restTemplate.getForObject("https://1946-34-126-86-196.ngrok.io/"+montant, String.class);
+
+			System.out.println(resmontant);
+		return  resmontant;	
+			
+		}
+		
+		
 		
 		
 	
