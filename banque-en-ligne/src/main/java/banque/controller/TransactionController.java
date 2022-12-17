@@ -33,7 +33,6 @@ import com.mailjet.client.errors.MailjetException;
 import banque.entities.Client;
 import banque.entities.CompteCourant;
 import banque.entities.Transaction;
-import banque.entities.TransactionHistory;
 import banque.entities.TypeTransaction;
 import banque.repositories.CompteCourantRepository;
 import banque.repositories.CompteEpargneRepository;
@@ -923,7 +922,7 @@ public class TransactionController {
 			return totalagios;
 		}
 		
-		
+		//FLASK
 		@GetMapping("/payementcheque")
 		public String payementcheque (@RequestParam("montant") String  montant,@RequestParam("image") String image ){
 
@@ -935,23 +934,6 @@ public class TransactionController {
 			
 		}
 		
-		
-		@GetMapping("/historiquetransaction")
-	    public ModelAndView getHistoriqueTransaction(HttpSession session){
-	        // Set View:
-	        ModelAndView getHistoriqueTransaction = new ModelAndView("historiquetransaction");
-
-	        // Get Logged In User:\
-	        client = (Client) session.getAttribute("client");
-
-	        // Get Payment History / Records:
-	        List<TransactionHistory> clientTransactHistory = transactionRep.getTransactionRecordsByClientNom("Kenza");//client.getNom()
-
-	        getHistoriqueTransaction.addObject("historiquetransaction", clientTransactHistory);
-
-	        return getHistoriqueTransaction;
-
-	    }
 	
 
 	

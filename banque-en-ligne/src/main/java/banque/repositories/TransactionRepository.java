@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import banque.entities.Transaction;
-import banque.entities.TransactionHistory;
 import banque.entities.TypeTransaction;
 
 @Transactional
@@ -95,27 +94,5 @@ public interface TransactionRepository extends CrudRepository<Transaction, Long>
 	
 	@Query("SELECT t FROM Transaction t WHERE t.rib= :rib")
 	List<Transaction> retrievelisttransactionsByRib(@Param("rib") String rib);
-	
-	
-	
-	@Query(value = "SELECT * FROM transaction_history WHERE nom = :nom", nativeQuery = true)
-	List<TransactionHistory> getTransactionRecordsByClientNom(@Param("nom") String nom);
-	
-	
-	@Modifying
-	@Query(value = "INSERT INTO transaction_history(nom, rib,beneficiairerib,type_transaction,montant,motif,statut, code_raison,date_operation)" +
-			"VALUES(:nom, :rib,:beneficiairerib,:type_transaction,:montant,:motif,:statut, :code_raison,:date_operation)", nativeQuery= true )
-	void ajouterHistTransaction(
-			@Param("nom") String nom,
-			@Param("rib") String rib,
-			@Param("beneficiairerib") String beneficiairerib,
-			@Param("type_transaction") String type_transaction,
-			@Param("montant") float montant,
-			@Param("motif") String motif,
-			
-			@Param("statut") String statut,
-			@Param("code_raison") String code_raison,
-			@Param("date_operation") LocalDateTime date_operation);
-	
-	
+
 }	
