@@ -73,9 +73,6 @@ public class Transaction implements Serializable{
 
 
 
-	@OneToMany(targetEntity=Reclamation.class ,cascade = CascadeType.ALL)	
-	@JoinColumn(name="rib",referencedColumnName="rib")
-	private List<Reclamation> reclamations;
 	
 
 	

@@ -59,7 +59,7 @@ public class CompteCourant implements Serializable{
 	private float Plafond;
 	
 	@ManyToOne
-    @JoinColumn(name = "nom_client")
+    @JoinColumn(name = "Nom")
     private Client client;
 	
 	/*@ManyToOne
@@ -77,6 +77,10 @@ public class CompteCourant implements Serializable{
 	private List<Transaction> transactions;
 	
 	
+	//khater retrievelisttransactionsByRib ki kenet onetomany bel transaction
+	@OneToMany(targetEntity=Reclamation.class ,cascade = CascadeType.ALL)	
+	@JoinColumn(name="rib",referencedColumnName="rib")
+	private List<Reclamation> reclamations;
 	
 
 

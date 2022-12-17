@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -24,10 +26,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.mailjet.client.errors.MailjetException;
 
+import banque.entities.Client;
+import banque.entities.CompteCourant;
 import banque.entities.Transaction;
+import banque.entities.TransactionHistory;
 import banque.entities.TypeTransaction;
 import banque.repositories.CompteCourantRepository;
 import banque.repositories.CompteEpargneRepository;
@@ -84,6 +90,9 @@ public class TransactionController {
 	
 	@Autowired
 	MailService Ms;
+	
+	
+	Client client;
 	
 	
 	
@@ -170,20 +179,32 @@ public class TransactionController {
 		
 //////////	
 	
-	
+	  
 /////MICRO SERVICES
+		
+	//byRibUserConnecte	
+	@GetMapping("/retrievelisttransactionsByRib")
+	public List<Transaction> retrievelisttransactionsByRib (@RequestParam("rib") String rib){
+		
+		List<Transaction> listTransactionsByName = transactionRep.retrievelisttransactionsByRib(rib);
+		return listTransactionsByName;
+	}
+	
+				
+		
 	
 	//li fel param mta3 el methode houma li bech ndakhalhom
 	@PostMapping("/depot")
-	public String depot (@RequestParam("deposit_amount") String depositAmount, @RequestParam("monRib") String monRib){
+	public String depot (@RequestParam("deposit_amount") String depositAmount, @RequestParam("monRib") String monRib){//,HttpSession session
 		
+		//client = (Client) session.getAttribute("client");
 		
-		//Get Currrent COMPTE COURANT BALANCE:
 		long rib= Long.parseLong(monRib); //bech el compte courantId li fel parametrz nraja3ha long
 		float depositMontantValue = Float.parseFloat(depositAmount);
-		float currentSolde = compteCourantRep.getSoldeCompteCourant(monRib);
-						
-		//check if deposit amount =0
+		
+		//float currentSolde = compteCourantRep.getSoldeCompteCourantt("Kenza",monRib); //client.getNom()
+		float currentSolde = compteCourantRep.getSoldeCompteCourant(monRib);				
+		
 		if(depositMontantValue == 0) {
 			transactionRep.ajouterTransaction(monRib,monRib, "Dépot", depositMontantValue, "Dépot", "dépot sans succés", "montant de dépot = 0", currentDateTime);  
 			
@@ -229,7 +250,7 @@ public class TransactionController {
 		compteCourantRep.ChangeSoldeCompteCourantByRib(newSolde,monRib);
 		//Save f table transaction
 		transactionRep.ajouterTransaction(monRib,monRib, "Dépot", depositMontantValue,"---", "dépot avec succés", "montant de dépot = "+ depositMontantValue, currentDateTime);  
-
+		
 		return "depot avec succés";
 	
 		
@@ -297,8 +318,9 @@ public class TransactionController {
 	@PostMapping("/transfer")
 	public String transfer (@RequestParam("transferFromRib") String transferFromRib,  @RequestParam("transferToRib") String transferToRib,@RequestParam("transfer_amount") String transferAmount, @RequestParam("motif") String motif){
 		//Get Currrent COMPTE COURANT BALANCE:
-				long transferFrom= Long.parseLong(transferFromRib); //bech el compte courantId li fel parametrz nraja3ha long
-				long transferTo= Long.parseLong(transferToRib);
+				
+		//long transferFrom= Long.parseLong(transferFromRib); //bech el compte courantId li fel parametrz nraja3ha long
+		//long transferTo= Long.parseLong(transferToRib);
 				
 				int transferMontant = Integer.parseInt(transferAmount);
 				
@@ -307,7 +329,7 @@ public class TransactionController {
 							
 		
 //check if transfering into the same compteCourant
-		if(transferFrom == transferTo) {
+				if(transferFromRib.equals(transferToRib)) {
 
 			transactionRep.ajouterTransaction(transferFromRib,transferToRib, "Virement_Immédiat", transferMontant, motif, "Echec du virement immédiat", "envoi au meme compte", currentDateTime);  
 
@@ -370,8 +392,8 @@ public class TransactionController {
 		@PostMapping("/transferEpargne")
 		public String transferEpargne (@RequestParam("transferFromRib") String transferFromRib,  @RequestParam("transferToRib") String transferToRib,@RequestParam("transfer_amount") String transferAmount, @RequestParam("motif") String motif){
 			//Get Currrent COMPTE COURANT BALANCE:
-					long transferFrom= Long.parseLong(transferFromRib); //bech el compte courantId li fel parametrz nraja3ha long
-					long transferTo= Long.parseLong(transferToRib);
+					//long transferFrom= Long.parseLong(transferFromRib); //bech el compte courantId li fel parametrz nraja3ha long
+					//long transferTo= Long.parseLong(transferToRib);
 					
 					int transferMontant = Integer.parseInt(transferAmount);
 					
@@ -380,7 +402,7 @@ public class TransactionController {
 								
 			
 	//check if transfering into the same compteCourant
-			if(transferFrom == transferTo) {
+				if(transferFromRib.equals(transferToRib)) {
 
 				transactionRep.ajouterTransaction(transferFromRib,transferToRib, "Virement_Immédiat", transferMontant, motif, "Echec du virement immédiat", "envoi au meme compte", currentDateTime);  
 
@@ -438,6 +460,129 @@ public class TransactionController {
 			
 			return "montant transferé avec succés";
 		}
+		
+		//VIREMENT IMMEDIAT
+		@PostMapping("/transferFromCompteCourantToCompteEpargne")
+		public String transferFromCompteCourantToCompteEpargne (@RequestParam("transferFromRib") String transferFromRib,  @RequestParam("transferToRib") String transferToRib,@RequestParam("transfer_amount") String transferAmount, @RequestParam("motif") String motif){
+			//Get Currrent COMPTE COURANT BALANCE:
+					
+			//long transferFrom= Long.parseLong(transferFromRib); //bech el compte courantId li fel parametrz nraja3ha long
+			//long transferTo= Long.parseLong(transferToRib);
+					
+					int transferMontant = Integer.parseInt(transferAmount);					
+					float currentSoldeofCompteCourantTransferingFrom = compteCourantRep.getSoldeCompteCourant(transferFromRib);
+					float currentSoldeofCompteEpargneTransferingTo = compteEpargneRep.getSoldeCompteEpargne(transferToRib);
+								
+			
+	//check if transfering into the same compteCourant
+					if(transferFromRib.equals(transferToRib)) {
+
+				transactionRep.ajouterTransaction(transferFromRib,transferToRib, "Virement_Immédiat", transferMontant, motif, "Echec du virement immédiat", "envoi au meme compte", currentDateTime);  
+				long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(transferFromRib);
+				reclamationService.ajouterRec(transferFromRib, "Virement_Immédiat", transferMontant,motif, "Echec du virement immédiat", "envoi au meme compte", currentDateTime);				
+				return "cannot transfer to the same Account"; }
+			
+	//check if transfer amount =0
+			if(transferMontant == 0) {
+
+				transactionRep.ajouterTransaction(transferFromRib,transferToRib, "Virement_Immédiat", transferMontant,motif, "Echec du virement immédiat", "Montant de transfer egale à 0", currentDateTime);  
+				long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(transferFromRib);
+				reclamationService.ajouterRec(transferFromRib, "Virement_Immédiat", transferMontant,motif,"Echec du virement immédiat","Montant de transfer egale à 0", currentDateTime);
+				return "transfer amount value =0 , please enter a value greater than 0";
+			}
+			//check if transfer amount >currentsolde
+			if(transferMontant > currentSoldeofCompteCourantTransferingFrom ) {
+				
+				transactionRep.ajouterTransaction(transferFromRib,transferToRib, "Virement_Immédiat", transferMontant,motif, "Echec du virement immédiat", "Montant Transferé est superieur au solde", currentDateTime);  				
+				long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(transferFromRib);
+				reclamationService.ajouterRec(transferFromRib, "Virement_Immédiat", transferMontant,motif, "Echec du virement immédiat","Montant Transferé est superieur au solde", currentDateTime);			
+				return "impossible de transferer un montant superieur à celui dans votre compte";		
+				}
+			
+			if(transferMontant>=15000) {
+				
+				transactionRep.ajouterTransaction(transferFromRib,transferToRib, "Virement_Immédiat", transferMontant,motif, "Echec du virement immédiat", "15 000 dinars maximum par virement", currentDateTime);  
+				long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(transferFromRib);
+				reclamationService.ajouterRec(transferFromRib, "Virement_Immédiat", transferMontant,motif,"Echec du virement immédiat","15 000 dinars maximum par virement", currentDateTime);
+				return "15 000 dinars maximum par virement";
+				
+						}
+
+			
+			
+	//SINON: update solde
+			float newSoldetransferFrom = currentSoldeofCompteCourantTransferingFrom - transferMontant;
+			float newSoldetransferTo = currentSoldeofCompteEpargneTransferingTo + transferMontant;
+			
+			//update comptecourant
+			compteCourantRep.ChangeSoldeCompteCourantByRib(newSoldetransferFrom, transferFromRib);
+			compteEpargneRep.ChangeSoldeCompteEpargneByRib(newSoldetransferTo, transferToRib);
+			transactionRep.ajouterTransaction(transferFromRib,transferToRib, "Virement_Immédiat", transferMontant,motif, "virement immédiat effectué avec succès", transferMontant +" Dinars Transféré", currentDateTime );  
+			
+			
+			return "montant transferé avec succés";
+		}
+		
+		
+		//VIREMENT IMMEDIAT
+		@PostMapping("/transferFromCompteEpargneToCompteCourant")
+		public String transferFromCompteEpargneToCompteCourant (@RequestParam("transferFromRib") String transferFromRib,  @RequestParam("transferToRib") String transferToRib,@RequestParam("transfer_amount") String transferAmount, @RequestParam("motif") String motif){
+			//Get Currrent COMPTE COURANT BALANCE:
+					
+			//long transferFrom= Long.parseLong(transferFromRib); //bech el compte courantId li fel parametrz nraja3ha long
+			//long transferTo= Long.parseLong(transferToRib);
+					
+					int transferMontant = Integer.parseInt(transferAmount);					
+					float currentSoldeofCompteEpargneTransferingFrom = compteEpargneRep.getSoldeCompteEpargne(transferFromRib);
+					float currentSoldeofCompteCourantTransferingTo = compteCourantRep.getSoldeCompteCourant(transferToRib);
+								
+			
+	//check if transfering into the same compteCourant
+					if(transferFromRib.equals(transferToRib)) {
+
+				transactionRep.ajouterTransaction(transferFromRib,transferToRib, "Virement_Immédiat", transferMontant, motif, "Echec du virement immédiat", "envoi au meme compte", currentDateTime);  
+				long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(transferFromRib);
+				reclamationService.ajouterRec(transferFromRib, "Virement_Immédiat", transferMontant,motif, "Echec du virement immédiat", "envoi au meme compte", currentDateTime);				
+				return "cannot transfer to the same Account"; }
+			
+	//check if transfer amount =0
+			if(transferMontant == 0) {
+				
+				transactionRep.ajouterTransaction(transferFromRib,transferToRib, "Virement_Immédiat", transferMontant,motif, "Echec du virement immédiat", "Montant de transfer egale à 0", currentDateTime);  
+				long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(transferFromRib);
+				reclamationService.ajouterRec(transferFromRib, "Virement_Immédiat", transferMontant,motif,"Echec du virement immédiat","Montant de transfer egale à 0", currentDateTime);
+				return "transfer amount value =0 , please enter a value greater than 0";
+			}
+			//check if transfer amount >currentsolde
+			if(transferMontant > currentSoldeofCompteEpargneTransferingFrom ) {
+				
+				transactionRep.ajouterTransaction(transferFromRib,transferToRib, "Virement_Immédiat", transferMontant,motif, "Echec du virement immédiat", "Montant Transferé est superieur au solde", currentDateTime);  				
+				long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(transferFromRib);
+				reclamationService.ajouterRec(transferFromRib, "Virement_Immédiat", transferMontant,motif, "Echec du virement immédiat","Montant Transferé est superieur au solde", currentDateTime);
+				return "impossible de transferer un montant superieur à celui dans votre compte";		
+				}
+			
+			if(transferMontant>=15000) {
+				
+				transactionRep.ajouterTransaction(transferFromRib,transferToRib, "Virement_Immédiat", transferMontant,motif, "Echec du virement immédiat", "15 000 dinars maximum par virement", currentDateTime);  
+				long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(transferFromRib);
+				reclamationService.ajouterRec(transferFromRib, "Virement_Immédiat", transferMontant,motif,"Echec du virement immédiat","15 000 dinars maximum par virement", currentDateTime);
+				return "15 000 dinars maximum par virement";
+				
+						}			
+			
+	//SINON: update solde
+			float newSoldetransferFrom = currentSoldeofCompteEpargneTransferingFrom - transferMontant;
+			float newSoldetransferTo = currentSoldeofCompteCourantTransferingTo + transferMontant;
+			
+			//update comptecourant
+			compteEpargneRep.ChangeSoldeCompteEpargneByRib(newSoldetransferFrom, transferFromRib);
+			compteCourantRep.ChangeSoldeCompteCourantByRib(newSoldetransferTo, transferToRib);			
+			transactionRep.ajouterTransaction(transferFromRib,transferToRib, "Virement_Immédiat", transferMontant,motif, "virement immédiat effectué avec succès", transferMontant +" Dinars Transféré", currentDateTime );  
+									
+			return "montant transferé avec succés";
+		}
+		
 	
 	
 	@PostMapping("/retrait")
@@ -739,7 +884,8 @@ public class TransactionController {
 					return ResponseEntity.status(HttpStatus.OK).body(null);
 				}	
 	
-				
+		
+				//lel virement
     @GetMapping("/GetNomClientParRib/{rib}")
 	public String nameOfUserByRib(@PathVariable("rib") String rib)
 	{
@@ -779,10 +925,10 @@ public class TransactionController {
 		
 		
 		@GetMapping("/payementcheque")
-		public String payementcheque (@RequestParam("montant") String  montant){
+		public String payementcheque (@RequestParam("montant") String  montant,@RequestParam("image") String image ){
 
 			RestTemplate restTemplate = new RestTemplate();
-			String resmontant = restTemplate.getForObject("https://1946-34-126-86-196.ngrok.io/"+montant, String.class);
+			String resmontant = restTemplate.getForObject("http://af25-34-126-170-30.ngrok.io/"+montant+"/"+image , String.class);
 
 			System.out.println(resmontant);
 		return  resmontant;	
@@ -790,9 +936,22 @@ public class TransactionController {
 		}
 		
 		
-		
-		
-	
+		@GetMapping("/historiquetransaction")
+	    public ModelAndView getHistoriqueTransaction(HttpSession session){
+	        // Set View:
+	        ModelAndView getHistoriqueTransaction = new ModelAndView("historiquetransaction");
+
+	        // Get Logged In User:\
+	        client = (Client) session.getAttribute("client");
+
+	        // Get Payment History / Records:
+	        List<TransactionHistory> clientTransactHistory = transactionRep.getTransactionRecordsByClientNom("Kenza");//client.getNom()
+
+	        getHistoriqueTransaction.addObject("historiquetransaction", clientTransactHistory);
+
+	        return getHistoriqueTransaction;
+
+	    }
 	
 
 	

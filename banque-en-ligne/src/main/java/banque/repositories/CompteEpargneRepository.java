@@ -20,7 +20,7 @@ public interface CompteEpargneRepository extends CrudRepository<CompteEpargne, L
 	@Query("update CompteEpargne cc set cc.Solde = :new_solde where cc.rib = :rib" )
 	void ChangeSoldeCompteEpargneByRib(@Param("new_solde")float new_solde,@Param("rib") String ribc );
 	
-	@Query(value = "SELECT nom_client FROM compte_epargne  WHERE rib =:rib ", nativeQuery= true)
+	@Query(value = "SELECT nom FROM compte_epargne  WHERE rib =:rib ", nativeQuery= true)
 	String NombyRib(@Param("rib") String rib);
 
 }
