@@ -50,8 +50,7 @@ public class CompteEpargne implements Serializable{
 	@ManyToOne
 	private Client ClientEpargnes;
 	
-	@OneToMany(mappedBy = "EpargneAssurances")
-	private Set<AssuranceCE> AssurancesCE;
+
 	
 	@OneToMany(mappedBy = "EpargneTransactions")
 	private Set<Transaction> TransactionsEpargne;
