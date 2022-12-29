@@ -86,3 +86,4 @@ public class Client implements Serializable {
 	private Set<CompteEpargne> ClientEpargnes;
 	
 }
+

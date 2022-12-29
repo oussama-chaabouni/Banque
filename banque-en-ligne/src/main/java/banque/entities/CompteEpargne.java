@@ -48,12 +48,19 @@ public class CompteEpargne implements Serializable{
 	private TypeEpargne TypeEpargne;
 	
 	@ManyToOne
-	private Client ClientEpargnes;
+    @JoinColumn(name = "nom")
+    private Client clientepargne;
 	
 
 	
-	@OneToMany(mappedBy = "EpargneTransactions")
-	private Set<Transaction> TransactionsEpargne;
+/*	
+	@OneToMany(cascade = CascadeType.ALL,mappedBy = "EpargneTransactions")
+	private Set<Transaction> TransactionsEpargne; */
+
+	//khater retrievelisttransactionsByRib ki kenet onetomany bel transaction
+	@OneToMany(targetEntity=Transaction.class ,cascade = CascadeType.ALL)	
+	@JoinColumn(name="rib",referencedColumnName="rib")
+	private List<Transaction> transactions;
 
 	
 }

@@ -67,8 +67,11 @@ public class Employe implements Serializable{
 	@ManyToMany(mappedBy="EmployesEmplois",cascade = CascadeType.ALL)
 	private Set<Emplois> Emploiss;
 	@JsonIgnore
-	@ManyToMany(mappedBy="EmployesFormations",cascade = CascadeType.ALL)
-	private Set<Formation> Formations;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "Employe")
+	private List<Formation_Details> Formations_Details;
+		@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id_salaire", referencedColumnName = "idSalaire")
+	private Salaire salaire;
 	
  @JsonIgnore
 	@ManyToMany(mappedBy="EmployesSalaires",cascade = CascadeType.ALL)

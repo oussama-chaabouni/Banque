@@ -1,57 +1,87 @@
 package banque.entities;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Getter
+@Setter
+
 @Entity	
 @Table(name="Transaction")
 public class Transaction implements Serializable{
-	private static final long serialVersionUID = 1L;
+	
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long idTransaction;
-	
-	@Column(name = "Montant")
-	private float Montant;
-	
-	@Column(name = "Source")
-	private String Source;
-	
-	@Column(name = "Statut")
-	private String Statut;
-	
-	@Column(name = "Raison")
-	private String Raison;
-	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "CreeLe")
-	private Date CreeLe;
-	
-	@Column(name = "TypeTransaction")
+	private String rib;
+	private String beneficiairerib;
 	@Enumerated(EnumType.STRING)
-	private TypeTransaction TypeTransaction;
+	private TypeTransaction typeTransaction;
+	private float montant;
+	private String motif;
+	/*
+	@OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "Ribc")
+	private CompteCourant ribCompteCourant;
+	*/
+	private String statut;
+	private String codeRaison;
+	private LocalDateTime dateOperation;
+/*	
+	@ManyToOne
+	 CompteEpargne EpargneTransactions;
+	
 	
 	@ManyToOne
-	private CompteEpargne EpargneTransactions;
+	 CompteCourant CourantTransactions;	 */
+	 
+	/*
+	@JsonManagedReference
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="transaction")
+	private Set<Reclamation> reclamation;  */
+
+
+
 	
-	@ManyToOne
-	private CompteCourant CourantTransactions;
+
 	
 	
-	@ManyToMany(cascade = CascadeType.ALL)
-	private Set<Reclamation> ReclamationsTransactions;
+	
+	
+	
+
+	
+	
+	
 }

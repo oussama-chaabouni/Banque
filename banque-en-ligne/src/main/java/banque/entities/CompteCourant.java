@@ -50,6 +50,18 @@ public class CompteCourant implements Serializable{
 	@OneToMany(mappedBy = "CourantCredits")
 	private Set<Credit> Credits;
 	
-	@OneToMany(mappedBy = "CourantTransactions")
-	private Set<Transaction> TransactionsCourant;
+	/*@OneToMany(cascade = CascadeType.ALL,mappedBy = "CourantTransactions")
+	private Set<Transaction> TransactionsCourant; */
+	
+	
+	@OneToMany(targetEntity=Transaction.class ,cascade = CascadeType.ALL)	
+	@JoinColumn(name="rib",referencedColumnName="rib")
+	private List<Transaction> transactions;
+	
+	
+	//khater retrievelisttransactionsByRib ki kenet onetomany bel transaction
+	@OneToMany(targetEntity=Reclamation.class ,cascade = CascadeType.ALL)	
+	@JoinColumn(name="rib",referencedColumnName="rib")
+	private List<Reclamation> reclamations;
+
 }

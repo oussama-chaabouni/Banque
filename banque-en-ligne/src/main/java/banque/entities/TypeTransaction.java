@@ -1,8 +1,11 @@
 package banque.entities;
 
 public enum TypeTransaction {
-	Transfer,
-	depot,
-	Payement,
-	retrait
+	
+	Dépot,
+	Paiement,
+	Retrait,
+	Virement_Immédiat,
+	Virement_Différé,
+	Virement_Permanent
 }
