@@ -2,8 +2,8 @@ package banque.entities;
 
 public enum ObjectifCredit {
 	Voiture,
-	
 	Education,
 	Business,
-	Vacances_autres
+	Vacances_autres,
+	Furniture_Equipment,
 }
