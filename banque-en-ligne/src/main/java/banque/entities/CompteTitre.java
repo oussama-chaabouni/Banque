@@ -76,7 +76,7 @@ public class CompteTitre implements Serializable{
 	public void setFraisTenue(float fraisTenue) {
 		FraisTenue = fraisTenue;
 	}
-
+@JsonIgnore
 	public Client getClientTitres() {
 		return ClientTitres;
 	}

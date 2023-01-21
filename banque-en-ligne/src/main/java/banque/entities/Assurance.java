@@ -17,8 +17,6 @@ import lombok.Setter;
 
 
 
-@Getter
-@Setter
 
 @Entity	
 @Table(name="Assurance")
@@ -64,6 +62,71 @@ public class Assurance implements Serializable{
 		this.typeAssurance = typeAssurance;
 		this.typeCompte = typeCompte;
 		this.suggestion = suggestion;
+	}
+
+
+	public long getIdAssurance() {
+		return idAssurance;
+	}
+
+
+	public void setIdAssurance(long idAssurance) {
+		this.idAssurance = idAssurance;
+	}
+
+
+	public String getDescription() {
+		return Description;
+	}
+
+
+	public void setDescription(String description) {
+		Description = description;
+	}
+
+
+	public String getNom() {
+		return Nom;
+	}
+
+
+	public void setNom(String nom) {
+		Nom = nom;
+	}
+
+
+	public TypeAssurance getTypeAssurance() {
+		return typeAssurance;
+	}
+
+
+	public void setTypeAssurance(TypeAssurance typeAssurance) {
+		this.typeAssurance = typeAssurance;
+	}
+
+
+	public TypeCompte getTypeCompte() {
+		return typeCompte;
+	}
+
+
+	public void setTypeCompte(TypeCompte typeCompte) {
+		this.typeCompte = typeCompte;
+	}
+
+
+	public boolean isSuggestion() {
+		return suggestion;
+	}
+
+
+	public void setSuggestion(boolean suggestion) {
+		this.suggestion = suggestion;
+	}
+
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 

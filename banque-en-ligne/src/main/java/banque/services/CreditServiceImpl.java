@@ -28,6 +28,18 @@ public class CreditServiceImpl implements ICreditService {
 	ClientRepository clientRepository;
 	
 	
+
+	@Override
+	public String getDescById(Long idCredit) {
+		Credit creditt = creditRepository.findById(idCredit).orElse(null);
+	String desc=creditt.getDescriptionCredit();
+		return desc;
+		
+	}
+
+	
+	
+	
 	//#############################Basic######################
 	@Override
 	public List<Credit> retrieveAllCredits() {
@@ -68,9 +80,9 @@ public class CreditServiceImpl implements ICreditService {
 	    Random rnd = new Random();
 	    int number = rnd.nextInt(999999);
 	    Client c = clientRepository.findById(IdC).orElse(null);
-	    CompteCourant cc = c.getCompteCourants().iterator().next();;
+	    CompteCourant cc = c.getComptecourants().iterator().next();;
 		l.setCourantCredits(cc);
-	    System.out.println(c.getCompteCourants());
+	    System.out.println(c.getComptecourants());
 		l.setStatusCredit(StatusCredit.EN_COURS);
 		creditRepository.save(l);
 		System.out.println(l.getIdCredit());
@@ -136,9 +148,9 @@ public class CreditServiceImpl implements ICreditService {
 		HashMap<Object, Object> map = new HashMap<>();
 		//JSONObject jo = new JSONObject();
 				Date dt=new Date();
-				map.put("age",(dt.getYear()-l.getCourantCredits().getClientCourants().getDateNaissance().getYear()));
-				map.put("sex",l.getCourantCredits().getClientCourants().getSexe());
-				map.put("housing",l.getCourantCredits().getClientCourants().getLogement());
+				map.put("age",(dt.getYear()-l.getCourantCredits().getClient().getDateNaissance().getYear()));
+				map.put("sex",l.getCourantCredits().getClient().getSexe());
+				map.put("housing",l.getCourantCredits().getClient().getLogement());
 				map.put("chekingAccount",l.getCourantCredits().getSolde());
 				map.put("amount",l.getMontantTotal()/2);
 				map.put("mois",l.getDureeDuCredit());

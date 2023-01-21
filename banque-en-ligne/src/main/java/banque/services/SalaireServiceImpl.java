@@ -23,6 +23,7 @@ public class SalaireServiceImpl implements SalaireService{
 	SalaireRepository SR;
   
 	//@Scheduled(fixedDelay = 10000)
+	@Scheduled(cron="0 0 0 1 1/1 *")
 	//@Scheduled(cron = "0 30 11 59 * ?", zone = "Europe/Paris")
 	public void CalculerSalaireNet() {
 		List<Employe> ListDesEmployess = new ArrayList();

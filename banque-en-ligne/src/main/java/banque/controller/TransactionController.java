@@ -585,7 +585,7 @@ public class TransactionController {
 	
 	
 	@PostMapping("/retrait")
-	public String retrait (@RequestParam("retrait_amount") String retraitAmount, @RequestParam("monRib") String monRib) throws MailjetException{
+	public String retrait (@RequestParam("retrait_amount") String retraitAmount, @RequestParam("monRib") String monRib) {
 		//convert variables
 		long rib= Long.parseLong(monRib); //bech el compte courantId li fel parametrz nraja3ha long
 		float retraitMontantValue = Float.parseFloat(retraitAmount);
@@ -653,14 +653,14 @@ public class TransactionController {
 		compteCourantRep.ChangeSoldeCompteCourantByRib(newSolde, monRib);
 
 		transactionRep.ajouterTransaction(monRib,monRib, "Retrait", retraitMontantValue,"---", "retrait avec succés", "montant retiré = "+ retraitMontantValue, currentDateTime);  
-		Ms.envoyerMailPersonnelDateExamen();
+		
 
 		return "retrait avec succés";	
 		
 	}
 	
 	@PostMapping("/retraitEpargne")
-	public String retraitEpargne (@RequestParam("retrait_amount") String retraitAmount, @RequestParam("monRib") String monRib) throws MailjetException{
+	public String retraitEpargne (@RequestParam("retrait_amount") String retraitAmount, @RequestParam("monRib") String monRib) {
 		
 		//convert variables
 		long rib= Long.parseLong(monRib); //bech el compte courantId li fel parametrz nraja3ha long
@@ -729,7 +729,7 @@ public class TransactionController {
 		compteEpargneRep.ChangeSoldeCompteEpargneByRib(newSolde, monRib);
 
 		transactionRep.ajouterTransaction(monRib,monRib, "Retrait", retraitMontantValue,"---", "retrait avec succés", "montant retiré = "+ retraitMontantValue, currentDateTime);  
-		Ms.envoyerMailPersonnelDateExamen();
+		
 
 		return "retrait avec succés";	
 		

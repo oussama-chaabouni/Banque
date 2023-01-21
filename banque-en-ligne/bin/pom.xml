@@ -10,17 +10,27 @@
 	</parent>
 	<groupId>banque</groupId>
 	<artifactId>banque</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>banque-en-ligne</name>
 	<description>banque</description>
 	<properties>
 		<java.version>1.8</java.version>
 	</properties>
+	
 	<dependencies>
+	<dependency>
+    <groupId>javax.validation</groupId>
+    <artifactId>validation-api</artifactId>
+    <version>2.0.1.Final</version>
+</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+		<dependency>
+      		<groupId>org.projectlombok</groupId>
+      		<artifactId>lombok</artifactId>
+    	</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -36,6 +46,68 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+		</dependency>
+			<dependency>
+      		<groupId>org.projectlombok</groupId>
+      		<artifactId>lombok</artifactId>
+    	</dependency>
+
+<!-- swagger: -->
+<dependency>
+<groupId>io.springfox</groupId>
+<artifactId>springfox-boot-starter </artifactId>
+<version>3.0.0 </version>
+</dependency>
+
+
+		<dependency>
+
+
+
+    <groupId>com.yahoofinance-api</groupId>
+    <artifactId>YahooFinanceAPI</artifactId>
+    <version>3.17.0</version>
+</dependency>
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-devtools</artifactId>
+	</dependency>
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-math3</artifactId>
+    <version>3.6.1</version>
+</dependency>
+<dependency>
+  <groupId>org.ojalgo</groupId>
+  <artifactId>ojalgo-finance</artifactId>
+  <version>2.4.1</version>
+</dependency>
+
+<!-- Quartz: -->
+<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-quartz</artifactId>
+</dependency>
+<!-- razorpay -->
+<dependency>
+			<groupId>com.razorpay</groupId>
+			<artifactId>razorpay-java</artifactId>
+			<version>1.4.2</version> 
+		</dependency>
+
+<!-- MAIL -->
+<dependency>
+            <groupId>com.mailjet</groupId>
+            <artifactId>mailjet-client</artifactId>
+            <version>5.2.0</version>
+        </dependency>
+
+		
+
 	</dependencies>
 
 	<build>

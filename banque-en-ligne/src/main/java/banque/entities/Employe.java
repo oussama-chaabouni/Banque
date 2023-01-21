@@ -2,6 +2,7 @@ package banque.entities;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -12,8 +13,10 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -21,6 +24,19 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@ToString
+@Getter
+@Setter
 
 @Entity	
 @Table(name="Employe")
@@ -73,10 +89,6 @@ public class Employe implements Serializable{
 	@JoinColumn(name = "id_salaire", referencedColumnName = "idSalaire")
 	private Salaire salaire;
 	
- @JsonIgnore
-	@ManyToMany(mappedBy="EmployesSalaires",cascade = CascadeType.ALL)
-	private Set<Salaire> Salaires;
-	
 	
  	@JsonIgnore
  	@OneToMany(mappedBy = "EmployeConges")
@@ -84,137 +96,7 @@ public class Employe implements Serializable{
 	@JsonIgnore
 	@OneToMany(mappedBy = "EmployeNotifications")
 	private Set<Notification> Notifications;
+	
 
-	public long getIdEmploye() {
-		return idEmploye;
-	}
-
-	public void setIdEmploye(long idEmploye) {
-		this.idEmploye = idEmploye;
-	}
-
-	public String getCIN() {
-		return CIN;
-	}
-
-	public void setCIN(String cIN) {
-		CIN = cIN;
-	}
-
-	public String getNom() {
-		return Nom;
-	}
-
-	public void setNom(String nom) {
-		Nom = nom;
-	}
-
-	public String getPrenom() {
-		return Prenom;
-	}
-
-	public void setPrenom(String prenom) {
-		Prenom = prenom;
-	}
-
-	public String getAdresse() {
-		return Adresse;
-	}
-
-	public void setAdresse(String adresse) {
-		Adresse = adresse;
-	}
-
-	public Date getDateNaissance() {
-		return DateNaissance;
-	}
-
-	public void setDateNaissance(Date dateNaissance) {
-		DateNaissance = dateNaissance;
-	}
-
-	public String getEmail() {
-		return Email;
-	}
-
-	public void setEmail(String email) {
-		Email = email;
-	}
-
-	public String getPassword() {
-		return Password;
-	}
-
-	public void setPassword(String password) {
-		Password = password;
-	}
-
-	public Role getRole() {
-		return Role;
-	}
-
-	public void setRole(Role role) {
-		Role = role;
-	}
-
-	public String getDepartement() {
-		return Departement;
-	}
-
-	public void setDepartement(String departement) {
-		Departement = departement;
-	}
-
-	public Set<Credit> getCredits() {
-		return Credits;
-	}
-
-	public void setCredits(Set<Credit> credits) {
-		Credits = credits;
-	}
-
-	public Set<Emplois> getEmploiss() {
-		return Emploiss;
-	}
-
-	public void setEmploiss(Set<Emplois> emploiss) {
-		Emploiss = emploiss;
-	}
-
-	public Set<Formation> getFormations() {
-		return Formations;
-	}
-
-	public void setFormations(Set<Formation> formations) {
-		Formations = formations;
-	}
-
-	public Set<Salaire> getSalaires() {
-		return Salaires;
-	}
-
-	public void setSalaires(Set<Salaire> salaires) {
-		Salaires = salaires;
-	}
-
-	public Set<Conge> getConges() {
-		return Conges;
-	}
-
-	public void setConges(Set<Conge> conges) {
-		Conges = conges;
-	}
-
-	public Set<Notification> getNotifications() {
-		return Notifications;
-	}
-
-	public void setNotifications(Set<Notification> notifications) {
-		Notifications = notifications;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
 	
 }
