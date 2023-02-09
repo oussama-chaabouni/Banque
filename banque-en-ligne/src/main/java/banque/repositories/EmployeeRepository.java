@@ -9,7 +9,7 @@ import banque.entities.Employe;
 @Transactional
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employe, Long>{
-
+	
 	
 	
 }

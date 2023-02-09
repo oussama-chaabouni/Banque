@@ -25,6 +25,7 @@ import banque.services.ICreditService;
 
 @RestController
 @RequestMapping("/Assurance")
+@CrossOrigin(origins = "*")
 public class AssuranceController {
 	@Autowired
 	IAssurance assuranceService;

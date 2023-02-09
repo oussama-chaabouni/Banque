@@ -62,6 +62,7 @@ private float Plafond;
     @JoinColumn(name = "Nom")
     private Client client;
 
+
 /*@ManyToOne
 private Client ClientCourants; */
 

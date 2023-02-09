@@ -17,6 +17,7 @@ import banque.entities.CompteCourant;
 import banque.entities.Credit;
 import banque.entities.StatusCredit;
 import banque.repositories.ClientRepository;
+import banque.repositories.CreditRepo;
 import banque.repositories.CreditRepository;
 
 @Service

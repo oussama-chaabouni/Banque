@@ -10,6 +10,7 @@ import banque.entities.Client;
 
 @Repository
 public interface ClientRepository extends CrudRepository <Client,Long> {
-	@Query("select p.Email from Client p")
+	@Query("select p.email from Client p")
 	List<String> getAllEmails();
+	Client findByEmail(String mail);
 }

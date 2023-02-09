@@ -15,10 +15,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
+
+import org.springframework.web.multipart.MultipartFile;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -63,7 +70,7 @@ private String Adresse;
 private Date DateNaissance;
 
 @Column(name = "Email")
-private String Email;
+private String email;
 
 @Column(name = "Password")
 private String Password;
@@ -78,21 +85,39 @@ private String Profession;
 @Enumerated(EnumType.STRING)
 private Logement Logement;
 
+@Column(name="status")
+private boolean status;
+@Column(name="enabled")
+private boolean enabled;
+@Lob
+@Column(name = "imagedata")
+private byte[] imageData;
 
+@Transient
+private String token;
 @OneToMany(mappedBy = "ClientNotifications")
 private Set<Notification> Notifications;
-
 @OneToMany(mappedBy = "ClientTitres")
 private Set<CompteTitre> CompteTitres;
 
 /*
 @OneToMany(mappedBy = "ClientCourants")
 private Set<CompteCourant> CompteCourants; */
-
+@JsonIgnore
 @OneToMany(mappedBy = "client")
     private Set<CompteCourant> comptecourants = new HashSet<>();
 
 @OneToMany(mappedBy = "clientepargne")
 private Set<CompteEpargne> clientepargnes = new HashSet<>();
+@JsonIgnore
+@OneToOne(mappedBy = "customerEmail")
+private EmailVerificationToken emailCustomer;
+
+@JsonIgnore
+@OneToOne(mappedBy = "customerToken")
+private RefreshToken customerToken;
+
+
+
 
 }

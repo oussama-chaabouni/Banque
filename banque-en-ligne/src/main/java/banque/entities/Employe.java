@@ -20,6 +20,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -64,7 +65,7 @@ public class Employe implements Serializable{
 	private Date DateNaissance;
 	
 	@Column(name = "Email")
-	private String Email;
+	private String email;
 	
 	@Column(name = "Password")
 	private String Password;
@@ -75,6 +76,16 @@ public class Employe implements Serializable{
 	
 	@Column(name = "Departement")
 	private String Departement;
+	
+	@Column(name="status")
+	private boolean status;
+	
+	@Column(name="enabled")
+	private boolean enabled;
+	
+	@Transient
+	private String token;
+	
 	@JsonIgnore
 
 	@ManyToMany(mappedBy="EmployesCredits",cascade = CascadeType.ALL)
@@ -96,7 +107,11 @@ public class Employe implements Serializable{
 	@JsonIgnore
 	@OneToMany(mappedBy = "EmployeNotifications")
 	private Set<Notification> Notifications;
+	@JsonIgnore
+	@OneToOne(mappedBy = "employeEmail")
+	private EmailVerificationToken emailClient;
 	
-
-	
+	@JsonIgnore
+	@OneToOne(mappedBy = "agentToken")
+	private RefreshToken agentToken;
 }
