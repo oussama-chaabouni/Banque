@@ -34,7 +34,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -104,8 +103,8 @@ private Set<CompteTitre> CompteTitres;
 @OneToMany(mappedBy = "ClientCourants")
 private Set<CompteCourant> CompteCourants; */
 @JsonIgnore
-@OneToMany(mappedBy = "client")
-    private Set<CompteCourant> comptecourants = new HashSet<>();
+@OneToMany(mappedBy = "ClientCourants")
+private Set<CompteCourant> CompteCourants;
 
 @OneToMany(mappedBy = "clientepargne")
 private Set<CompteEpargne> clientepargnes = new HashSet<>();

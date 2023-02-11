@@ -205,7 +205,7 @@ public class TransactionController {
 		float currentSolde = compteCourantRep.getSoldeCompteCourant(monRib);				
 		
 		if(depositMontantValue == 0) {
-			transactionRep.ajouterTransaction(monRib,monRib, "Dépot", depositMontantValue, "Dépot", "dépot sans succés", "montant de dépot = 0", currentDateTime);  
+			transactionRep.ajouterTransaction(monRib,"---", "Dépot", depositMontantValue, "Dépot", "dépot sans succés", "montant de dépot = 0", currentDateTime);  
 			
 			//transactionId bech najem n3amer colonne transactionid f table reclamation
 			long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(monRib);
@@ -238,7 +238,7 @@ public class TransactionController {
 			float newSoldeApresDecouvert = currentSolde + depositMontantValue-AGIOS;
 			
 			compteCourantRep.ChangeSoldeCompteCourantByRib(newSoldeApresDecouvert,monRib);
-			transactionRep.ajouterTransaction(monRib,monRib, "Dépot", depositMontantValue,"---", "dépot avec succés", "durée du decouvert "+duréedudecouvert, currentDateTime);  
+			transactionRep.ajouterTransaction(monRib,"---", "Dépot", depositMontantValue,"---", "dépot avec succés", "durée du decouvert "+duréedudecouvert, currentDateTime);  
 			
 			return AGIOS +"/" ;
 		}	
@@ -248,7 +248,7 @@ public class TransactionController {
 		float newSolde = currentSolde + depositMontantValue;
 		compteCourantRep.ChangeSoldeCompteCourantByRib(newSolde,monRib);
 		//Save f table transaction
-		transactionRep.ajouterTransaction(monRib,monRib, "Dépot", depositMontantValue,"---", "dépot avec succés", "montant de dépot = "+ depositMontantValue, currentDateTime);  
+		transactionRep.ajouterTransaction(monRib,"---", "Dépot", depositMontantValue,"---", "dépot avec succés", "montant de dépot = "+ depositMontantValue, currentDateTime);  
 		
 		return "depot avec succés";
 	
@@ -264,7 +264,7 @@ public class TransactionController {
 						
 		//check if deposit amount =0
 		if(depositMontantValue == 0) {
-			transactionRep.ajouterTransaction(monRib,monRib, "Dépot", depositMontantValue, "---", "dépot sans succés", "montant de dépot = 0", currentDateTime);  
+			transactionRep.ajouterTransaction(monRib,"---", "Dépot", depositMontantValue, "---", "dépot sans succés", "montant de dépot = 0", currentDateTime);  
 			
 			//transactionId bech najem n3amer colonne transactionid f table reclamation
 			long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(monRib);
@@ -296,7 +296,7 @@ public class TransactionController {
 			float newSoldeApresDecouvert = currentSolde + depositMontantValue-AGIOS;
 			
 			compteEpargneRep.ChangeSoldeCompteEpargneByRib(newSoldeApresDecouvert,monRib);
-			transactionRep.ajouterTransaction(monRib,monRib, "Dépot", depositMontantValue,"---", "dépot avec succés", "durée du decouvert "+duréedudecouvert, currentDateTime);  
+			transactionRep.ajouterTransaction(monRib,"---", "Dépot", depositMontantValue,"---", "dépot avec succés", "durée du decouvert "+duréedudecouvert, currentDateTime);  
 			
 			return "AGIOS "+AGIOS +" durée du decouvert" +duréedudecouvert +"jours" ;
 		}	
@@ -306,7 +306,7 @@ public class TransactionController {
 		float newSolde = currentSolde + depositMontantValue;
 		compteEpargneRep.ChangeSoldeCompteEpargneByRib(newSolde,monRib);
 		//Save f table transaction
-		transactionRep.ajouterTransaction(monRib,monRib, "Dépot", depositMontantValue,"---", "dépot avec succés", "montant de dépot = "+ depositMontantValue, currentDateTime);  
+		transactionRep.ajouterTransaction(monRib,"---", "Dépot", depositMontantValue,"---", "dépot avec succés", "montant de dépot = "+ depositMontantValue, currentDateTime);  
 
 		return "depot avec succés";
 	
@@ -585,7 +585,7 @@ public class TransactionController {
 	
 	
 	@PostMapping("/retrait")
-	public String retrait (@RequestParam("retrait_amount") String retraitAmount, @RequestParam("monRib") String monRib) {
+	public String retrait (@RequestParam("retrait_amount") String retraitAmount, @RequestParam("monRib") String monRib) { //throws MailjetException
 		//convert variables
 		long rib= Long.parseLong(monRib); //bech el compte courantId li fel parametrz nraja3ha long
 		float retraitMontantValue = Float.parseFloat(retraitAmount);
@@ -594,7 +594,7 @@ public class TransactionController {
 		//check if retrait amount =0
 		if(retraitMontantValue == 0) {
 
-			transactionRep.ajouterTransaction(monRib,monRib, "Retrait", retraitMontantValue, "---", "retrait sans succés", "montant retiré = "+ retraitMontantValue, currentDateTime);  
+			transactionRep.ajouterTransaction(monRib,"---", "Retrait", retraitMontantValue, "---", "retrait sans succés", "montant retiré = "+ retraitMontantValue, currentDateTime);  
 
 			long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(monRib);
 			reclamationService.ajouterRec(monRib, "Retrait", retraitMontantValue,"---", "retrait sans succés", "montant retiré = "+ retraitMontantValue, currentDateTime);
@@ -609,7 +609,7 @@ public class TransactionController {
 			if(newSolde<= -1200)
 			{
 					
-			transactionRep.ajouterTransaction(monRib,monRib, "Retrait", retraitMontantValue, "---", "retrait sans succés", "Solde insuffisant", currentDateTime);  
+			transactionRep.ajouterTransaction(monRib,"---", "Retrait", retraitMontantValue, "---", "retrait sans succés", "Solde insuffisant", currentDateTime);  
 					
 			long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(monRib);
 			reclamationService.ajouterRec(monRib, "Retrait", retraitMontantValue,"---", "retrait sans succés", "Solde insuffisant", currentDateTime);
@@ -638,11 +638,11 @@ public class TransactionController {
 			int nombredejoursdanslannée=365 ; 
 				
 			//AGIOS = (montant du découvert x durée du découvert x taux de la banque)/nombre de jours dans l’année
-			float AGIOS = ((montantdudecouvert * duréedudecouvert * tauxAnnuelEffectifGlobal)/ nombredejoursdanslannée) ;
+			float AGIOS = ((montantdudecouvert * duréedudecouvert * 0.12f)/ 365) ;
 			float newSoldeApresDecouvert = currentSolde - retraitMontantValue-AGIOS;
 					
 			compteCourantRep.ChangeSoldeCompteCourantByRib(newSoldeApresDecouvert, monRib);
-			transactionRep.ajouterTransaction(monRib,monRib, "Retrait", retraitMontantValue,"---", "retrait avec succés", "durée du decouvert "+duréedudecouvert, currentDateTime);  
+			transactionRep.ajouterTransaction(monRib,"---", "Retrait", retraitMontantValue,"---", "retrait avec succés", "durée du decouvert "+duréedudecouvert, currentDateTime);  
 					
 			return AGIOS +"/" ;
 		}	
@@ -652,15 +652,15 @@ public class TransactionController {
 		float newSolde = currentSolde - retraitMontantValue;
 		compteCourantRep.ChangeSoldeCompteCourantByRib(newSolde, monRib);
 
-		transactionRep.ajouterTransaction(monRib,monRib, "Retrait", retraitMontantValue,"---", "retrait avec succés", "montant retiré = "+ retraitMontantValue, currentDateTime);  
-		
+		transactionRep.ajouterTransaction(monRib,"---", "Retrait", retraitMontantValue,"---", "retrait avec succés", "montant retiré = "+ retraitMontantValue, currentDateTime);  
+		//Ms.envoyerMailPersonnelDateExamen();
 
 		return "retrait avec succés";	
 		
 	}
 	
 	@PostMapping("/retraitEpargne")
-	public String retraitEpargne (@RequestParam("retrait_amount") String retraitAmount, @RequestParam("monRib") String monRib) {
+	public String retraitEpargne (@RequestParam("retrait_amount") String retraitAmount, @RequestParam("monRib") String monRib) { //throws MailjetException
 		
 		//convert variables
 		long rib= Long.parseLong(monRib); //bech el compte courantId li fel parametrz nraja3ha long
@@ -670,7 +670,7 @@ public class TransactionController {
 		//check if retrait amount =0
 		if(retraitMontantValue == 0) {
 
-			transactionRep.ajouterTransaction(monRib,monRib, "Retrait", retraitMontantValue, "---", "retrait sans succés", "montant retiré = "+ retraitMontantValue, currentDateTime);  
+			transactionRep.ajouterTransaction(monRib,"---", "Retrait", retraitMontantValue, "---", "retrait sans succés", "montant retiré = "+ retraitMontantValue, currentDateTime);  
 
 			long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(monRib);
 			reclamationService.ajouterRec(monRib, "Retrait", retraitMontantValue,"---", "retrait sans succés", "montant retiré = "+ retraitMontantValue, currentDateTime);
@@ -685,7 +685,7 @@ public class TransactionController {
 			if(newSolde<= -1200)
 			{
 					
-			transactionRep.ajouterTransaction(monRib,monRib, "Retrait", retraitMontantValue, "---", "retrait sans succés", "Solde insuffisant", currentDateTime);  
+			transactionRep.ajouterTransaction(monRib,"---", "Retrait", retraitMontantValue, "---", "retrait sans succés", "Solde insuffisant", currentDateTime);  
 					
 			long transactionId = transactionRep.findTopByOrderByIdTransactionDesc(monRib);
 			reclamationService.ajouterRec(monRib, "Retrait", retraitMontantValue,"---", "retrait sans succés", "Solde insuffisant", currentDateTime);
@@ -718,7 +718,7 @@ public class TransactionController {
 			float newSoldeApresDecouvert = currentSolde - retraitMontantValue-AGIOS;
 					
 			compteEpargneRep.ChangeSoldeCompteEpargneByRib(currentSolde-AGIOS+retraitMontantValue, monRib);
-			transactionRep.ajouterTransaction(monRib,monRib, "Retrait", retraitMontantValue,"---", "Retrait avec succés", "durée du decouvert "+duréedudecouvert, currentDateTime);  
+			transactionRep.ajouterTransaction(monRib,"---", "Retrait", retraitMontantValue,"---", "retrait avec succés", "durée du decouvert "+duréedudecouvert, currentDateTime);  
 					
 			return "AGIOS "+AGIOS +" durée du decouvert: " +duréedudecouvert +" jours" ;
 		}	
@@ -728,8 +728,8 @@ public class TransactionController {
 		float newSolde = currentSolde - retraitMontantValue;
 		compteEpargneRep.ChangeSoldeCompteEpargneByRib(newSolde, monRib);
 
-		transactionRep.ajouterTransaction(monRib,monRib, "Retrait", retraitMontantValue,"---", "retrait avec succés", "montant retiré = "+ retraitMontantValue, currentDateTime);  
-		
+		transactionRep.ajouterTransaction(monRib,"---", "Retrait", retraitMontantValue,"---", "retrait avec succés", "montant retiré = "+ retraitMontantValue, currentDateTime);  
+		//Ms.envoyerMailPersonnelDateExamen();
 
 		return "retrait avec succés";	
 		
@@ -842,7 +842,7 @@ public class TransactionController {
 		}
 		
 		
-		//VIREMENT DIFFERE
+		//VIREMENT DIFFERE compte courant l compte courant
 		@PostMapping("/scheduleVirementDiffere")
 		public ResponseEntity<Void> schedule(@RequestBody JobData data)
 		{
@@ -853,7 +853,7 @@ public class TransactionController {
 		
 		
 		
-		//VIREMENT PERMANENT
+		//VIREMENT PERMANENT compte courant l compte courant
 			@PostMapping("/scheduleVirementpermanent")
 			public ResponseEntity<Void> scheduleVirementPermanent(@RequestBody JobDataVirementPermanent data)
 			{
@@ -863,7 +863,7 @@ public class TransactionController {
 			}
 			
 		
-			//VIREMENT DIFFERE
+			//VIREMENT DIFFERE compte epargne l compte epargne
 			@PostMapping("/scheduleVirementDiffereEpargne")
 			public ResponseEntity<Void> scheduleEpargne(@RequestBody JobData data)
 			{
@@ -874,7 +874,7 @@ public class TransactionController {
 			
 			
 			
-			//VIREMENT PERMANENT
+			//VIREMENT PERMANENT compte epargne l compte epargne
 				@PostMapping("/scheduleVirementpermanentEpargne")
 				public ResponseEntity<Void> scheduleVirementPermanentEpargne(@RequestBody JobDataVirementPermanent data)
 				{
@@ -884,7 +884,7 @@ public class TransactionController {
 				}	
 	
 		
-				//lel virement
+				//lel virement  bech nekteb rib ya3tin esm moula el rib
     @GetMapping("/GetNomClientParRib/{rib}")
 	public String nameOfUserByRib(@PathVariable("rib") String rib)
 	{
@@ -927,7 +927,7 @@ public class TransactionController {
 		public String payementcheque (@RequestParam("montant") String  montant,@RequestParam("image") String image ){
 
 			RestTemplate restTemplate = new RestTemplate();
-			String resmontant = restTemplate.getForObject("http://af25-34-126-170-30.ngrok.io/"+montant+"/"+image , String.class);
+			String resmontant = restTemplate.getForObject("http://6e70-34-91-247-228.ngrok.io/"+montant+"/"+image , String.class);
 
 			System.out.println(resmontant);
 		return  resmontant;	

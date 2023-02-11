@@ -27,7 +27,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -57,18 +56,20 @@ private float Solde;
 
 @Column(name = "Plafond")
 private float Plafond;
-
+/*
 @ManyToOne
     @JoinColumn(name = "Nom")
     private Client client;
+*/
 
-
-/*@ManyToOne
-private Client ClientCourants; */
-
+@ManyToOne
+private Client ClientCourants; 
+@OneToMany(mappedBy = "CourantCredits")
+private Set<Credit> Credits;
+/*
 @OneToMany(cascade = CascadeType.ALL,mappedBy = "CourantCredits")
 private Set<Credit> Credits;
-
+*/
 /*@OneToMany(cascade = CascadeType.ALL,mappedBy = "CourantTransactions")
 private Set<Transaction> TransactionsCourant; */
 

@@ -44,6 +44,19 @@ public class ClientServiceImpl implements ICustomerService {
 
 		return a;
 	}
+	
+	@Override
+	public Client addImage(Long id,MultipartFile image) throws IOException  {
+		
+	Client a = customerRep.findById(id).orElse(null);
+			a.setImageData(ImageUtil.compressImage(image.getBytes()));
+
+			customerRep.save(a);
+			// TODO Auto-generated catch block
+			
+
+		return a;
+	}
 	@Override
 	public Client addClient2(Client a)  {
 		PasswordEncoder encoder=new BCryptPasswordEncoder();

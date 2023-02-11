@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.time.LocalDateTime;
 import banque.entities.CompteEpargne;
 
 
@@ -23,4 +23,17 @@ public interface CompteEpargneRepository extends CrudRepository<CompteEpargne, L
 	@Query(value = "SELECT nom FROM compte_epargne  WHERE rib =:rib ", nativeQuery= true)
 	String NombyRib(@Param("rib") String rib);
 
+	@Modifying
+	@Query(value = "INSERT INTO compte_epargne(rib,ibane,plafond,solde, interet, type_epargne,nom)" +
+			"VALUES(:rib,:ibane,:plafond,:solde, :interet, :type_epargne, :nom)", nativeQuery= true )
+	void ajouterCompteEpargne(
+
+			@Param("rib") String rib,
+			@Param("ibane") String ibane,
+			@Param("plafond") int plafond,
+			@Param("solde") float solde,
+			@Param("interet") float interet,
+			@Param("type_epargne") String type_epargne,
+			@Param("nom") String nom
+			);
 }

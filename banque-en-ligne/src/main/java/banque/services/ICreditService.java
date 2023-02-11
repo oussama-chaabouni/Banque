@@ -31,4 +31,5 @@ public interface ICreditService {
 	
 	Credit denyLoanRequest(Long id);
   String getDescById(Long idCredit);
+  List <Credit> retrieveCreditbyClient(Long id);
 }

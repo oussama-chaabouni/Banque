@@ -37,10 +37,10 @@ public class EcheanceServiceImp implements IEcheanceService {
 		double total = mensualite * mois;
 		double mantantinterest = calculMontantInterest(capital,total);
 		
-		return "Your loan of :  " +capital +"\n "+ "Monthly Payments :  "+ mensualite +"\n "
-		+ "Interest Rate : " +interest +"\n "
+		return "Votre credit de :  " +capital +"\n "+ "Paiement mensuel :  "+ mensualite +"\n "
+		+ "Taux d'intérêt : " +interest +"\n "
 				
-				+"Total Interest : " +mantantinterest +"\n "+ "Total Payment : " + total ;
+				+"Taux d'intérêt réel : " +mantantinterest +"\n "+ "Total : " + total ;
 	}
 
 	@Override

@@ -34,7 +34,7 @@ def predict(id):
     df3["Age"]=[r2['age']]
     df3["Sex"]=[r2['sex']]
     df3["Housing"]=[r2['housing']]
-    df3["Saving accounts"]=[r2['savingAccount']]
+    df3["Saving accounts"]=["10"]
     df3["Checking accounts"]=[r2['checkingAccount']]
     df3["Credit amount"]=[r2['amount']]
     df3["Duration"]=[r2['mois']]

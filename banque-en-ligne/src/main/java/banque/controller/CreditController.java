@@ -134,4 +134,12 @@ public class CreditController {
 		return map;
 	 
 	}
+	
+	// http://localhost:8082/banque-en-ligne/credit/retrieve-all-credits-by-client/100
+			@GetMapping("/retrieve-all-credits-by-client/{client-id}")
+			@ResponseBody
+			public List<Credit> getCreditsbyClient(@PathVariable("client-id") Long IdC) {
+			List<Credit> listCredit = creditService.retrieveCreditbyClient(IdC);
+			return listCredit;
+			}
 }

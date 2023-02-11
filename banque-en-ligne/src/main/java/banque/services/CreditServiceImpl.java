@@ -2,6 +2,7 @@ package banque.services;
 
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -81,9 +82,11 @@ public class CreditServiceImpl implements ICreditService {
 	    Random rnd = new Random();
 	    int number = rnd.nextInt(999999);
 	    Client c = clientRepository.findById(IdC).orElse(null);
-	    CompteCourant cc = c.getComptecourants().iterator().next();;
+	    CompteCourant cc = c.getCompteCourants().iterator().next();
+	    l.setCreditRef(String.format("%06d", number));
 		l.setCourantCredits(cc);
-	    System.out.println(c.getComptecourants());
+	    //System.out.println(c.getCompteCourants());
+		
 		l.setStatusCredit(StatusCredit.EN_COURS);
 		creditRepository.save(l);
 		System.out.println(l.getIdCredit());
@@ -149,9 +152,9 @@ public class CreditServiceImpl implements ICreditService {
 		HashMap<Object, Object> map = new HashMap<>();
 		//JSONObject jo = new JSONObject();
 				Date dt=new Date();
-				map.put("age",(dt.getYear()-l.getCourantCredits().getClient().getDateNaissance().getYear()));
-				map.put("sex",l.getCourantCredits().getClient().getSexe());
-				map.put("housing",l.getCourantCredits().getClient().getLogement());
+				map.put("age",(dt.getYear()-l.getCourantCredits().getClientCourants().getDateNaissance().getYear()));
+				map.put("sex",l.getCourantCredits().getClientCourants().getSexe());
+				map.put("housing",l.getCourantCredits().getClientCourants().getLogement());
 				map.put("chekingAccount",l.getCourantCredits().getSolde());
 				map.put("amount",l.getMontantTotal()/2);
 				map.put("mois",l.getDureeDuCredit());
@@ -167,7 +170,7 @@ public class CreditServiceImpl implements ICreditService {
 		HashMap<Object, Object> map = new HashMap<>();
 		
 		//float [] arr= new float[4];
-		if (sex.equals("F")) {
+		if (sex.equals("femme")) {
 			map.put("0",(float) 0.0);
 		}else {
 			map.put("0",(float) 1.0);
@@ -225,7 +228,24 @@ public double  predictScore(long id) {
 	}
 
 	
-	
+	@Override
+	public List <Credit> retrieveCreditbyClient(Long id) {
+		
+		Client c = clientRepository.findById(id).orElse(null);
+	    CompteCourant cc = c.getCompteCourants().iterator().next();
+	    List<Credit> lc = (List<Credit>) creditRepository.findAll();
+	    ArrayList <Credit> list = new ArrayList<Credit>();
+	    
+	    for(Credit credit  :lc)
+		{	
+	    	if(credit.getCourantCredits() == cc)
+	    		list.add(credit);
+			 	 
+			 
+	    }
+		
+		return list;
+	}
 
 
 }

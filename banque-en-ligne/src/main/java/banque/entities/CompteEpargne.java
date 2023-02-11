@@ -47,6 +47,9 @@ private String rib;
 @Column(name = "IBANE")
 private String IBANE;
 
+@Column(name = "plafond")
+private int plafond;
+
 @Column(name = "Solde")
 private float Solde;
 

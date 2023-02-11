@@ -47,6 +47,7 @@ import banque.entities.Client;
 import banque.entities.Employe;
 import banque.entities.FileUploadUtil;
 import banque.entities.ImageResponse;
+import banque.entities.ImageUtil;
 import banque.entities.JwtResponse;
 import banque.entities.RefreshToken;
 import banque.entities.TokenRefreshRequest;
@@ -258,38 +259,34 @@ public class AuthenticationController {
 	
 	@Autowired
 	ClientRepository customerRep;
-	/*
-	@PostMapping("/addCustomer")
+	
+	@PostMapping("/addImage")
 	@ResponseBody
-	public Client registerCustomer(@ModelAttribute Client customer,@RequestParam("image") MultipartFile image) throws IOException, MessagingException {
-		System.out.println(image+"******************");
-        String fileName = StringUtils.cleanPath(image.getOriginalFilename());
-        custService.addClient(customer,image);
-         
-        customerRep.save(customer);
+	public MultipartFile registerCustomer(@RequestParam Long id,@RequestParam("image") MultipartFile image) throws IOException, MessagingException {
+		Client a = customerRep.findById(id).orElse(null);
+		a.setImageData(ImageUtil.compressImage(image.getBytes()));
+
+		customerRep.save(a);
  
-        String uploadDir = "user-photos/" + customer.getIdClient();
- 
-        FileUploadUtil.saveFile(uploadDir, fileName, image);
+       // FileUploadUtil.saveFile(uploadDir, fileName, image);
+        custService.addImage(id,image);
 		
+
 		
-		try {
-			
-			
-			
-			custService.addClient(customer,image);
-			eventPublisher.publishEvent(new OnRegistrationCompleteEvent( customer));
-			
-			
-			
-		} catch (Exception e) {
-			System.out.print(e.getMessage());
-			
-		}
-		
-		return customer;
+		return image;
 	}
-	*/
+	@GetMapping("/getImage")
+	@ResponseBody
+	public byte[] imageCustomer(@RequestParam Long id) throws IOException {
+		Client a = customerRep.findById(id).orElse(null);
+		byte[] image = a.getImageData();		
+      
+		 byte[] img = ImageUtil.decompressImage(image);
+
+		
+		return image;
+	}
+	
 	
 	@PostMapping("/addCustomer")
 	@ResponseBody
