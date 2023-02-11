@@ -1,5 +1,7 @@
 package banque.repositories;
 
+import java.time.LocalDateTime;
+
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -22,5 +24,19 @@ public interface CompteEpargneRepository extends CrudRepository<CompteEpargne, L
 	
 	@Query(value = "SELECT nom FROM compte_epargne  WHERE rib =:rib ", nativeQuery= true)
 	String NombyRib(@Param("rib") String rib);
+	
+	@Modifying
+	@Query(value = "INSERT INTO compte_epargne(rib,ibane,plafond,solde, interet, type_epargne,nom)" +
+			"VALUES(:rib,:ibane,:plafond,:solde, :interet, :type_epargne, :nom)", nativeQuery= true )
+	void ajouterCompteEpargne(
+			
+			@Param("rib") String rib,
+			@Param("ibane") String ibane,
+			@Param("plafond") int plafond,
+			@Param("solde") float solde,
+			@Param("interet") float interet,
+			@Param("type_epargne") String type_epargne,
+			@Param("nom") String nom
+			);
 
 }

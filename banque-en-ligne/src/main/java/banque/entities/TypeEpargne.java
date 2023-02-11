@@ -4,5 +4,6 @@ public enum TypeEpargne {
 	Livret_A,
 	LDDS, 
 	LEP,
-	Livret_JEUNE
+	Livret_JEUNE,
+	Compte_Epargne
 }

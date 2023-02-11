@@ -89,10 +89,11 @@ public class Client implements Serializable {
 	@OneToMany(mappedBy = "ClientCourants")
 	private Set<CompteCourant> CompteCourants; */
 	
+/*	 NA7ITHOM KHATER 3AMLOULI ERREUR KI JIT NAFFICHI LES COMPTES
 	@OneToMany(mappedBy = "client")
     private Set<CompteCourant> comptecourants = new HashSet<>();
 	
 	@OneToMany(mappedBy = "clientepargne")
 	private Set<CompteEpargne> clientepargnes = new HashSet<>();
-	
+*/	
 }

@@ -57,10 +57,14 @@ public class CompteCourant implements Serializable{
 	
 	@Column(name = "Plafond")
 	private float Plafond;
-	
+
+	/*  NA7ITHa KHATER 3AMLetli ERREUR KI JIT NAFFICHI LES COMPTES:java.lang.NumberFormatException: For input string: "Kenza" yekhi badaltha beli ta7tha khater onetomany normalement int ama ena badaltah fel base string
 	@ManyToOne
     @JoinColumn(name = "Nom")
     private Client client;
+    */
+	
+	private String Nom;
 	
 	/*@ManyToOne
 	private Client ClientCourants; */

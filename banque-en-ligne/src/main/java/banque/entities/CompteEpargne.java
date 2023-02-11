@@ -46,6 +46,9 @@ public class CompteEpargne implements Serializable{
 	
 	@Column(name = "IBANE")
 	private String IBANE;
+	
+	@Column(name = "plafond")
+	private int plafond;
 
 	@Column(name = "Solde")
 	private float Solde;
@@ -57,9 +60,13 @@ public class CompteEpargne implements Serializable{
 	@Enumerated(EnumType.STRING)
 	private TypeEpargne TypeEpargne;
 	
+	/*  NA7ITHa KHATER 3AMLetli ERREUR KI JIT NAFFICHI LES COMPTES:java.lang.NumberFormatException: For input string: "Kenza" yekhi badaltha beli ta7tha
 	@ManyToOne
     @JoinColumn(name = "nom")
     private Client clientepargne;
+    */
+	private String Nom;
+
 	
 	@OneToMany(mappedBy = "EpargneAssurances")
 	private Set<AssuranceCE> AssurancesCE;

@@ -33,5 +33,16 @@ public interface CompteCourantRepository extends CrudRepository<CompteCourant, L
 	@Query("SELECT Solde FROM CompteCourant cc WHERE Nom= :Nom AND cc.rib= :rib")
 	float getSoldeCompteCourantt(@Param("Nom") String Nom , @Param("rib") String rib);
 	
+	@Modifying
+	@Query(value = "INSERT INTO compte_courant(ibanc,plafond,solde,rib,nom)" +
+			"VALUES(:ibanc, :plafond, :solde, :rib, :nom)", nativeQuery= true )
+	void ajouterCompteCourant(
+			
+			@Param("ibanc") String ibanc,
+			@Param("plafond") float plafond,
+			@Param("solde") float solde,
+			@Param("rib") String rib,
+			@Param("nom") String nom);
+	
 
 }
